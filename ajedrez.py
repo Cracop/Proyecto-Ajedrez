@@ -45,6 +45,9 @@ tipos:
 
     XN - Pieza negra
     XB - pieza blanca
+
+Para las heurísticas puedo utilizar la heurística material (sumo el valor de las piezas)
+y hay heuristicas para cada tipo de pieza, dependiendo de donde este en el tablero se le da un valor
 """
 
 
@@ -79,19 +82,17 @@ def imprimirMatriz(matriz):
     print(tabla)
 
 
-# La casilla se da por un número que va de 0 a 63
-# Fila = num/8; Columna = num % 8
-"""Rey = No tiene valor, pues no se puede capturar
+"""Rey = No tiene valor, pues no se puede capturar, pero si esta en jaque le resto algo
 Reina = 9
 Alfil = 3.25 (Según Bobby Fischer y Kasparov)
 Caballo = 3
 Peón = 1
 Torre = 5"""
+# La casilla se da por un número que va de 0 a 63
+# Fila = num/8; Columna = num % 8
 
 
-def crearPiezas(matriz, blancas, negras):
-    # Notacion FEN, con esto puedo dar un estado del tablero
-    FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
+def crearPiezas(matriz, blancas, negras, FEN):
     FEN = FEN.replace('/', '')
     # Va de abajo hacia arriba, minusculas son negras, mayusculas son blancas
     num = 0
@@ -160,8 +161,11 @@ tablero = [[0, 0, 0, 0, 0, 0, 0, 0],
            [0, 0, 0, 0, 0, 0, 0, 0]
            ]
 
+# Diccionario, sus llaves son la posiciones y el valor es el objeto de la pieza
 piezasBlancas = {}
 piezasNegras = {}
-crearPiezas(tablero, piezasBlancas, piezasNegras)
+# Notacion FEN, con esto puedo dar un estado del tablero
+FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
+crearPiezas(tablero, piezasBlancas, piezasNegras, FEN)
 imprimirMatriz(tablero)
 # print(piezasNegras)
