@@ -25,3 +25,4 @@ def heuristicaMaterial(blancas, negras):
     return valorBlancas - valorNegras
 
 # Agregar las tablas con los valores por pieza/posición
+#Se trata de valores por piezas
