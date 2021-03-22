@@ -49,6 +49,7 @@ tipos:
 Para las heurísticas puedo utilizar la heurística material (sumo el valor de las piezas)
 y hay heuristicas para cada tipo de pieza, dependiendo de donde este en el tablero se le da un valor
 """
+import heuristicas as h
 
 
 class Tablero:
@@ -57,9 +58,9 @@ class Tablero:
 
 
 class Pieza:
-    def __init__(self, valor, posicion, tipo):
-        self.valor = valor
+    def __init__(self, posicion, nombre, tipo):
         self.posicion = posicion
+        self.nombre = nombre
         self.tipo = tipo
         self.movidas = []
 
@@ -75,14 +76,14 @@ def imprimirMatriz(matriz):
                 tabla += ".."
                 tabla += "|"
             else:
-                tabla += matriz[i][j].tipo
+                tabla += matriz[i][j].nombre
                 tabla += "|"
             num += 1
         tabla += "\n"
     print(tabla)
 
 
-"""Rey = No tiene valor, pues no se puede capturar, pero si esta en jaque le resto algo
+"""Rey = No tiene valor, pues no se puede capturar, pero necesito un valor para la heuristica
 Reina = 9
 Alfil = 3.25 (Según Bobby Fischer y Kasparov)
 Caballo = 3
@@ -101,51 +102,51 @@ def crearPiezas(matriz, blancas, negras, FEN):
             num += int(FEN[i])
             num -= 1
         if FEN[i] == "r":  # Torre negra
-            torre = Pieza(5, num, "Tn")
+            torre = Pieza(num, "Tn", "Torre")
             matriz[int(num/8)][num % 8] = torre
             negras[num] = torre
         elif FEN[i] == "n":  # caballo negro
-            caballo = Pieza(3, num, "Cn")
+            caballo = Pieza(num, "Cn", "Caballo")
             matriz[int(num/8)][num % 8] = caballo
             negras[num] = caballo
         elif FEN[i] == "b":  # alfil negro
-            alfil = Pieza(3.25, num, "An")
+            alfil = Pieza(num, "An", "Alfil")
             matriz[int(num/8)][num % 8] = alfil
             negras[num] = alfil
         elif FEN[i] == "q":  # dama negra
-            dama = Pieza(9, num, "Dn")
+            dama = Pieza(num, "Dn", "Dama")
             matriz[int(num/8)][num % 8] = dama
             negras[num] = dama
         elif FEN[i] == "k":  # rey negro
-            rey = Pieza(None, num, "Rn")
+            rey = Pieza(num, "Rn", "Rey")
             matriz[int(num/8)][num % 8] = rey
             negras[num] = rey
         elif FEN[i] == "p":  # peon negro
-            peon = Pieza(1, num, "Pn")
+            peon = Pieza(num, "Pn", "Peon")
             matriz[int(num/8)][num % 8] = peon
             negras[num] = peon
         elif FEN[i] == "P":  # peon blanco
-            peon = Pieza(1, num, "Pb")
+            peon = Pieza(num, "Pb", "Peon")
             matriz[int(num/8)][num % 8] = peon
             blancas[num] = peon
         if FEN[i] == "R":  # Torre negra
-            torre = Pieza(5, num, "Tb")
+            torre = Pieza(num, "Tb", "Torre")
             matriz[int(num/8)][num % 8] = torre
             blancas[num] = torre
         elif FEN[i] == "N":  # caballo negro
-            caballo = Pieza(3, num, "Cb")
+            caballo = Pieza(num, "Cb", "Caballo")
             matriz[int(num/8)][num % 8] = caballo
             blancas[num] = caballo
         elif FEN[i] == "B":  # alfil negro
-            alfil = Pieza(3.25, num, "Ab")
+            alfil = Pieza(num, "Ab", "Alfil")
             matriz[int(num/8)][num % 8] = alfil
             blancas[num] = alfil
         elif FEN[i] == "Q":  # dama negra
-            dama = Pieza(9, num, "Db")
+            dama = Pieza(num, "Db", "Dama")
             matriz[int(num/8)][num % 8] = dama
             blancas[num] = dama
         elif FEN[i] == "K":  # rey negro
-            rey = Pieza(None, num, "Rb")
+            rey = Pieza(num, "Rb", "Rey")
             matriz[int(num/8)][num % 8] = rey
             blancas[num] = rey
         num += 1
@@ -168,4 +169,5 @@ piezasNegras = {}
 FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
 crearPiezas(tablero, piezasBlancas, piezasNegras, FEN)
 imprimirMatriz(tablero)
-# print(piezasNegras)
+
+print(str(h.heuristicaMaterial(piezasBlancas, piezasNegras)))
