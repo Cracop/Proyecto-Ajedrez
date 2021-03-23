@@ -168,6 +168,9 @@ piezasNegras = {}
 # Notacion FEN, con esto puedo dar un estado del tablero
 FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
 crearPiezas(tablero, piezasBlancas, piezasNegras, FEN)
-imprimirMatriz(tablero)
+#print(" ")
+#imprimirMatriz(tablero)
 
-print(str(h.heuristicaMaterial(piezasBlancas, piezasNegras)))
+#print(str(h.heuristicaMaterial(piezasBlancas, piezasNegras)))
+print(h.heuristicaPosiciones(piezasNegras))
+
