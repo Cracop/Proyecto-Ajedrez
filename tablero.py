@@ -1,10 +1,10 @@
 #Importo la librería
 import chess 
-
+import random
 #Esto me genera el tablero, si no le paso parametros me lo crea en la posición inicial.
 #Como parametro le tengo que pasar un estado en notacion FEN
 tablero = chess.Board()
-print(tablero)
+#print(tablero)
 #Chess-SQUARES en un rango que va de 0 a 63
 """
 SQUARES = [
@@ -49,8 +49,33 @@ for i in chess.SQUARES:
 
 #Para generar la lista de movimientos posibles, me regresa algo parecido a una lista
 #  tablero.legal_moves 
-#una movida esta dada posInicialPosFinal i.e. a2a3 un peon blanco avanza un cuadrado
-#Una movida pertenece a una clase específica
-for movida in tablero.legal_moves:
-    print(type(movida))
+#   una movida esta dada posInicialPosFinal i.e. a2a3 un peon blanco avanza un cuadrado
+#   Una movida pertenece a una clase específica
 
+#Para hacer que se haga una movida
+#   tablero.push(movida)
+#   hasta ahorita solo he logrado que lo haga iterando sobre la lista, no al darsela yo
+
+#Para regresar la ultima movida hecha
+#   tablero.pop()
+#   como una lista
+
+#El turno del que tiene que jugar esta dado por
+#   tablero.turn = Boolan
+#Donde 
+#   False = negras
+#   True = blancas
+#Si quiero elegir una movida de forma aleatoria
+#   movida = random.choice([movida for movida in tablero.legal_moves])
+
+#El siguiente codigo hace una partida con ambos lados haciendo movidas aleatorias
+#print(tablero)
+for i in range(10):
+    #print("Turno de", tablero.turn)
+    movida = random.choice([movida for movida in tablero.legal_moves])
+    tablero.push(movida)
+    #tablero.turn = not tablero.turn
+    #print(tablero)
+    #print("")
+print(tablero)
+# Al momento de hacer el push y pop me cambia el turno
