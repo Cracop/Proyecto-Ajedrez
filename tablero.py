@@ -47,3 +47,10 @@ for i in chess.SQUARES:
     #print(tablero.piece_at(i).color)
     pass
 
+#Para generar la lista de movimientos posibles, me regresa algo parecido a una lista
+#  tablero.legal_moves 
+#una movida esta dada posInicialPosFinal i.e. a2a3 un peon blanco avanza un cuadrado
+#Una movida pertenece a una clase específica
+for movida in tablero.legal_moves:
+    print(type(movida))
+
