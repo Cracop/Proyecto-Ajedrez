@@ -3,13 +3,13 @@
 Se hizo con el objetivo de poder implenetarla de manera correcta.
 
 ### Liberías importadas
-    -chess
-    -random
+- chess
+- random
 
 ### Creación del tablero
 Se utiliza `tablero = chess.Board()` para crear un tablero, el parametro que se le pasa es la notación FEN del estado del tablero que queremos:
--Si no se le pasa nada, por default te crea el tablero en su estado inicial
--Si se le pasa `None` se crea un tablero vacío
+- Si no se le pasa nada, por default te crea el tablero en su estado inicial
+- Si se le pasa `None` se crea un tablero vacío
 
 ### Implementación del tablero
 Analizando el código de la librería nos dimos cuenta que los cuadros del tablero están definido por un número que va del 0 al 63.
