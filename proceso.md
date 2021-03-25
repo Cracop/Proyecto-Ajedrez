@@ -41,12 +41,13 @@ a2 se encuentra a la derecha de a1
 Algo que se debe notar, según las reglas del ajedrez, jugando como las blancas, el recuadro a1 debe ubicarse en la esquina inferior izquierda, por lo que esta implementación está invertida verticalmente.
 
 #### Piezas
-- P/p = peon
-- N/n = caballo
-- B/b = alfil
-- Q/q = Dama
-- K/k = Rey
-- R/r = Torre
+(Simbolo|Tipo)
+- P/p = peon | 1
+- N/n = caballo | 2
+- B/b = alfil | 3 
+- R/r = Torre | 4
+- Q/q = Dama | 5 
+- K/k = Rey | 6
 
 ##### Colores de las piezas
 El color de una pieza se guarda como un Booleano, donde:
@@ -122,11 +123,38 @@ Lo cual nos regresa:
 ```
 Nos podemos dar cuenta como es que el tablero está invertido en cuanto a los número y que ahora ya tenemos las coordenadas para facilitarnos la vida.
 
-###Notación de los cuadros
+### Notación de los cuadros
 Nótese que si bien la manera en la que esta guardado el código es con números del 0 al 63, ajedrez se juega utilizando coordenadas. 
 - Las filas se denotan con números del `1` al `8`.
 - Las columnas se denotan con letras de la `a` a la `h`.
 
 Por lo tanto tenemos que encontrar una forma de pasar de coordenadas a números. Por suerte la librería tiene ciertas funciones que nos permiten pasar de uno a otro:
 - Con `chess.square_name(0)` me regresa sus coordenadas, en este caso `a1`
-- `chess.parse_square("a1")` me regresa su número, en este caso `0`
+- Con `chess.parse_square("a1")` me regresa su número, en este caso `0`
+
+### Generación de movimientos
+Para generar los movimientos utilizamos funciones de la librería, existen dos tipos de movimientos:
+- `tablero.legal_moves` te genera todos los movimientos legales en ese estado del tablero de acuerdo al jugador que tiene el turno
+- `tablero.pseudo_legal_moves` la diferencia con los movimientos legales, es que los pseudolegales pueden hacer que el Rey quede en jaque
+Ambos te dan una especie de lista, la cual es iterable pero no indexable. Para casos futuros utilizaremos los movimientos completamente legales. 
+
+Para ver de quién es turno puedo ver una propiedad de `tablero.turn`
+
+Más alla de obtener una lista de movimientos, nosotros podemos dar de manera explicita un movimiento creando un objeto de la clase `Move`
+`chess.Move(cuadroInicial`, cuadroFinal)`
+- ambos cuadros se dan utilizando un número del `0` al `63`
+Un ejemplo de la creación de un movimiento sería:
+```
+movida = chess.Move(1,25)
+print(movida)
+```
+Lo cual nos daría `b1b4`
+
+### Aplicación de Movimientos
+El tablero contiene una pila `tablero.move_stack` donde se almacenan todas las movidas, por lo que manipularlo con las siguientes funciones.
+- `tablero.push(movida)' para realizar un objeto `Move` que recibe como parametro como el creado anteriormente, automaticamente se cambia el turno.
+- `tablero.pop()` regreso el tablero a a como estaba un turno antes.
+- `tablero.peek()` puedo ver la ultima movida que se hizo
+
+
+

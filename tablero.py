@@ -141,3 +141,7 @@ def obtenFila(comienzo, final, tablero):
 
 imprimeTablero(tablero)
 print(tablero)
+
+movida = chess.Move(1,25)
+tablero.push(movida)
+print(movida)
