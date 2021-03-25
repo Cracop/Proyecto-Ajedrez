@@ -17,6 +17,16 @@ SQUARES = [
     A7, B7, C7, D7, E7, F7, G7, H7,
     A8, B8, C8, D8, E8, F8, G8, H8,
 ] = range(64)
+
+     0  1  2  3  4  5  6  7
+     8  9 10 11 12 13 14 15
+    16 17 18 19 20 21 22 23
+    24 25 26 27 28 29 30 31
+    32 33 34 35 36 37 38 39
+    40 41 42 43 44 45 46 47
+    48 49 50 51 52 53 54 55
+    56 57 58 59 60 61 62 63 
+
 a1 = 0 y así sucesivamente
 a1 se encuentra en la esquina inferior izquierda
 a2 se encuentra a la derecha de a1
@@ -83,10 +93,10 @@ print(tablero)
 
 #Para hacer una movida dada de manera especifica
 #   Al parecer se por medio de numeros del 0 al 63
-#   movida = chess.Move(fromSquare, toSquare)
+#   movida = chess.Move(fromSquare, toSqcuare)
 
 print(tablero)
-movida = chess.Move(63,25)
+movida = chess.Move(1,25)
 tablero.push(movida)
 print(movida)
 print(tablero)
