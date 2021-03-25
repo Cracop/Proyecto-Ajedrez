@@ -7,13 +7,13 @@ Se hizo con el objetivo de poder implenetarla de manera correcta.
     -random
 
 ### Creación del tablero
-Se utiliza 'tablero = chess.Board()' para crear un tablero, el parametro que se le pasa es la notación FEN del estado del tablero que queremos.
-    -Si no se le pasa nada, por default te crea el tablero en su estado inicial.
-    -Si se le pasa 'None' se crea un tablero vacío.
+Se utiliza `tablero = chess.Board()` para crear un tablero, el parametro que se le pasa es la notación FEN del estado del tablero que queremos.
+-Si no se le pasa nada, por default te crea el tablero en su estado inicial.
+-Si se le pasa 'None' se crea un tablero vacío.
 
 ### Implementación del tablero
 Analizando el código de la librería nos dimos cuenta que los cuadros del tablero están definido por un número que va del 0 al 63.
-'''
+```
 SQUARES = [
     A1, B1, C1, D1, E1, F1, G1, H1,
     A2, B2, C2, D2, E2, F2, G2, H2,
@@ -37,12 +37,12 @@ SQUARES = [
 a1 = 0 y así sucesivamente
 a1 se encuentra en la esquina inferior izquierda
 a2 se encuentra a la derecha de a1
-'''
+```
 Algo que se debe notar, según las reglas del ajedrez, jugando como las blancas, el recuadro a1 debe ubicarse en la esquina inferior izquierda, por lo que esta implementación está invertida verticalmente.
 
 ### Impresión del Tablero
 Pata poder visualizar el tablero en la terminal se puede hacer de dos maneras:
-    - Con una función de la librería
-    - Con un par de funciónes programada por nosotros
-    
+- Con una función de la librería
+- Con un par de funciónes programada por nosotros
+
 #### Función de la libería
