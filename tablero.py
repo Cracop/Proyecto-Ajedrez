@@ -46,7 +46,8 @@ Basicamente tengo que reflejar SQUARES verticalmente
 #   R/r - Torre
 
 #Para saber las coordenadas de la casilla dado su número de 0 a 63
-#   chess.square_name(0)
+#   chess.square_name(0) me regresa sus coordenadas tipo a1
+#   chess.parse_square("a1") me regresa su número tipo 0
 
 #De igual manera puedo saber que pieza hay utilizando el número de 0 a 63,
 #me regresa una letra (en realidad todo el objeto) si hay pieza, y None si no hay nada
@@ -81,14 +82,17 @@ for i in chess.SQUARES:
 #El siguiente codigo hace una partida con ambos lados haciendo movidas aleatorias
 #print(tablero)
 """
-for i in range(145):
+for i in range(500):
     #print("Turno de", tablero.turn)
+    if tablero.is_game_over():
+        print("Se acabo el juego", i)
+        break
     movida = random.choice([movida for movida in tablero.legal_moves])
     tablero.push(movida)
     print(tablero)
     print("")
 print(tablero)
-"""
+
 #   Al momento de hacer el push y pop me cambia el turno
 
 #Para hacer una movida dada de manera especifica
@@ -100,4 +104,39 @@ movida = chess.Move(1,25)
 tablero.push(movida)
 print(movida)
 print(tablero)
-#Falta enteder bien como esta dado el tablero
+"""
+#Falta enteder bien como esta dado el tablero, así que primero haré una funcion para 
+#   imprimir esto
+def imprimeTablero(tablero):
+    texto=""
+    texto += "8 "
+    texto+=obtenFila(56,64, tablero)
+    texto += "7 "
+    texto+=obtenFila(48,56, tablero)
+    texto += "6 "
+    texto+=obtenFila(40,48, tablero)
+    texto += "5 "
+    texto+=obtenFila(32,40, tablero)
+    texto += "4 "
+    texto+=obtenFila(24,32, tablero)
+    texto += "3 "
+    texto+=obtenFila(16,24, tablero)
+    texto += "2 "
+    texto+=obtenFila(8,16, tablero)
+    texto += "1 "
+    texto+=obtenFila(0,8, tablero) 
+    texto += "  a b c d e f g h"
+    print(texto)
+    #print(tablero)
+
+def obtenFila(comienzo, final, tablero):
+    fila = ""
+    for i in range(comienzo, final):
+        if tablero.piece_at(i) == None:
+            fila+=". "
+        else:
+            fila+=str(tablero.piece_at(i))+" "
+    fila+="\n"
+    return fila
+
+imprimeTablero(tablero)
