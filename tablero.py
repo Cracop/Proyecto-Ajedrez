@@ -70,12 +70,24 @@ for i in chess.SQUARES:
 
 #El siguiente codigo hace una partida con ambos lados haciendo movidas aleatorias
 #print(tablero)
-for i in range(10):
+"""
+for i in range(145):
     #print("Turno de", tablero.turn)
     movida = random.choice([movida for movida in tablero.legal_moves])
     tablero.push(movida)
-    #tablero.turn = not tablero.turn
-    #print(tablero)
-    #print("")
+    print(tablero)
+    print("")
 print(tablero)
-# Al momento de hacer el push y pop me cambia el turno
+"""
+#   Al momento de hacer el push y pop me cambia el turno
+
+#Para hacer una movida dada de manera especifica
+#   Al parecer se por medio de numeros del 0 al 63
+#   movida = chess.Move(fromSquare, toSquare)
+
+print(tablero)
+movida = chess.Move(63,25)
+tablero.push(movida)
+print(movida)
+print(tablero)
+#Falta enteder bien como esta dado el tablero
