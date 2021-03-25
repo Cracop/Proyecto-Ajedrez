@@ -46,3 +46,73 @@ Pata poder visualizar el tablero en la terminal se puede hacer de dos maneras:
 - Con un par de funciónes programada por nosotros
 
 #### Función de la libería
+De esta forma solo tenemos que escribir `print(tablero)` lo cual nos dará lo siguiente:
+```
+r n b q k b n r
+p p p p p p p p
+. . . . . . . .
+. . . . . . . .
+. . . . . . . .
+. . . . . . . .
+P P P P P P P P
+R N B Q K B N R
+```
+Donde las mayúsculas son las piezas blancas y las minúsculas son las negras.
+Se puede notar que no nos da las coordenadas
+
+##### Piezas
+- P/p = peon
+- N/n = caballo
+- B/b = alfil
+- Q/q = Dama
+- K/k = Rey
+- R/r = Torre
+
+#### Nuestras funciones 
+Sean nuestras funciones las siguientes:
+```
+def imprimeTablero(tablero):
+    texto=""
+    texto += "8 "
+    texto+=obtenFila(56,64, tablero)
+    texto += "7 "
+    texto+=obtenFila(48,56, tablero)
+    texto += "6 "
+    texto+=obtenFila(40,48, tablero)
+    texto += "5 "
+    texto+=obtenFila(32,40, tablero)
+    texto += "4 "
+    texto+=obtenFila(24,32, tablero)
+    texto += "3 "
+    texto+=obtenFila(16,24, tablero)
+    texto += "2 "
+    texto+=obtenFila(8,16, tablero)
+    texto += "1 "
+    texto+=obtenFila(0,8, tablero) 
+    texto += "  a b c d e f g h"
+    print(texto)
+    #print(tablero)
+
+def obtenFila(comienzo, final, tablero):
+    fila = ""
+    for i in range(comienzo, final):
+        if tablero.piece_at(i) == None:
+            fila+=". "
+        else:
+            fila+=str(tablero.piece_at(i))+" "
+    fila+="\n"
+    return fila
+```
+Lo cual nos regresa:
+```
+8 r n b q k b n r 
+7 p p p p p p p p 
+6 . . . . . . . . 
+5 . . . . . . . . 
+4 . . . . . . . . 
+3 . . . . . . . . 
+2 P P P P P P P P 
+1 R N B Q K B N R 
+  a b c d e f g h
+```
+Nos podemos dar cuenta como es que el tablero está invertido en cuanto a los número y que ahora ya tenemos las coordenadas para facilitarnos la vida

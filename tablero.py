@@ -140,3 +140,4 @@ def obtenFila(comienzo, final, tablero):
     return fila
 
 imprimeTablero(tablero)
+print(tablero)
