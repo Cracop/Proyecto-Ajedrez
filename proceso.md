@@ -157,7 +157,8 @@ El tablero contiene una pila `tablero.move_stack` donde se almacenan todas las m
 - `tablero.pop()` regreso el tablero a a como estaba un turno antes.
 - `tablero.peek()` puedo ver la ultima movida que se hizo
 
-#### Ejemplo de dar jugadas
+#### Ejemplos
+Con push()
 ```
 print("Turno de", tablero.turn, "\n")
 print(tablero, "\n")
@@ -172,7 +173,7 @@ tablero.push(movida)
 print("Turno de", tablero.turn , "\n")
 print(tablero)
 ```
-Podemos ver como funciona push()
+
 ```
 Turno de True 
 
@@ -211,5 +212,99 @@ N . . . . . . .
 P P P P P P P P
 R . B Q K B N R
 ```
+Ejemplo de pop()
+```
+print("Turno de", tablero.turn, "\n")
+print(tablero, "\n")
+movida = chess.Move(1,16)
+print("Movida realizada", movida, "\n")
+tablero.push(movida)
+print("Turno de", tablero.turn , "\n")
+print(tablero, "\n")
+tablero.pop()
+print("Turno de", tablero.turn , "\n")
+print(tablero)
+```
+```
+Turno de True 
 
+r n b q k b n r
+p p p p p p p p
+. . . . . . . .
+. . . . . . . .
+. . . . . . . .
+. . . . . . . .
+P P P P P P P P
+R N B Q K B N R 
 
+Movida realizada b1a3 
+
+Turno de False 
+
+r n b q k b n r
+p p p p p p p p
+. . . . . . . .
+. . . . . . . .
+. . . . . . . .
+N . . . . . . .
+P P P P P P P P
+R . B Q K B N R 
+
+Turno de True 
+
+r n b q k b n r
+p p p p p p p p
+. . . . . . . .
+. . . . . . . .
+. . . . . . . .
+. . . . . . . .
+P P P P P P P P
+R N B Q K B N R
+```
+Ejemplo de peek()
+```
+print("Turno de", tablero.turn, "\n")
+print(tablero, "\n")
+movida = chess.Move(1,16)
+tablero.push(movida)
+print("Turno de", tablero.turn , "\n")
+print(tablero, "\n")
+print("Ultima movida",tablero.peek())
+print("Turno de", tablero.turn , "\n")
+print(tablero)
+```
+```
+Turno de True 
+
+r n b q k b n r
+p p p p p p p p
+. . . . . . . .
+. . . . . . . .
+. . . . . . . .
+. . . . . . . .
+P P P P P P P P
+R N B Q K B N R 
+
+Turno de False 
+
+r n b q k b n r
+p p p p p p p p
+. . . . . . . .
+. . . . . . . .
+. . . . . . . .
+N . . . . . . .
+P P P P P P P P
+R . B Q K B N R 
+
+Ultima movida b1a3
+Turno de False 
+
+r n b q k b n r
+p p p p p p p p
+. . . . . . . .
+. . . . . . . .
+. . . . . . . .
+N . . . . . . .
+P P P P P P P P
+R . B Q K B N R
+```
