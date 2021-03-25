@@ -140,6 +140,7 @@ def obtenFila(comienzo, final, tablero):
     return fila
 
 #imprimeTablero(tablero)
+"""
 print("Turno de", tablero.turn, "\n")
 print(tablero, "\n")
 movida = chess.Move(1,16)
@@ -149,4 +150,10 @@ print(tablero, "\n")
 print("Ultima movida",tablero.peek())
 print("Turno de", tablero.turn , "\n")
 print(tablero)
-
+"""
+print(tablero)
+for i in range(5):
+    movida = random.choice([movida for movida in tablero.legal_moves])
+    tablero.push(movida)
+    print("")
+    print(tablero)

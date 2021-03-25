@@ -308,3 +308,71 @@ N . . . . . . .
 P P P P P P P P
 R . B Q K B N R
 ```
+### Aplicación automática de movimientos
+Si bien la lista de movimientos no es indexable, si es iterable, por lo que podemos elegir movimientos de manera automática de la lista de movimientos legales.
+Un ejemplo de esto es lo siguiente:
+```
+print(tablero)
+for i in range(5):
+    movida = random.choice([movida for movida in tablero.legal_moves])
+    tablero.push(movida)
+    print("")
+    print(tablero)
+```
+Se utiliza `random.choice([movida for movida in tablero.legal_moves]` para elegir un movimiento de manera aleatoria de los posibles movimientos legales para un estado específico del tablero.
+Aquí podemos observar los primeros 5 turnos donde los jugadores realizan movimientos de manera aleatoria.
+```
+r n b q k b n r
+p p p p p p p p
+. . . . . . . .
+. . . . . . . .
+. . . . . . . .
+. . . . . . . .
+P P P P P P P P
+R N B Q K B N R
+
+r n b q k b n r
+p p p p p p p p
+. . . . . . . .
+. . . . . . . .
+. . . . . . . .
+N . . . . . . .
+P P P P P P P P
+R . B Q K B N R
+
+r n b q k b n r
+p p p p p . p p
+. . . . . p . .
+. . . . . . . .
+. . . . . . . .
+N . . . . . . .
+P P P P P P P P
+R . B Q K B N R
+
+r n b q k b n r
+p p p p p . p p
+. . . . . p . .
+. . . . . . . .
+. . . . . . . .
+N . . P . . . .
+P P P . P P P P
+R . B Q K B N R
+
+r n b q k b n r
+. p p p p . p p
+p . . . . p . .
+. . . . . . . .
+. . . . . . . .
+N . . P . . . .
+P P P . P P P P
+R . B Q K B N R
+
+r n b q k b n r
+. p p p p . p p
+p . . . . p . B
+. . . . . . . .
+. . . . . . . .
+N . . P . . . .
+P P P . P P P P
+R . . Q K B N R
+```
