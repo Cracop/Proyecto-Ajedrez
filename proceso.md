@@ -142,7 +142,7 @@ Ambos te dan una especie de lista, la cual es iterable pero no indexable. Para c
 Para ver de quién es turno puedo ver una propiedad de `tablero.turn`
 
 Más alla de obtener una lista de movimientos, nosotros podemos dar de manera explicita un movimiento creando un objeto de la clase `Move`
-`chess.Move(cuadroInicial`, cuadroFinal)`
+`chess.Move(cuadroInicial, cuadroFinal)`
 - ambos cuadros se dan utilizando un número del `0` al `63`
 Un ejemplo de la creación de un movimiento sería:
 ```
