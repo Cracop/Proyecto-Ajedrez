@@ -7,7 +7,7 @@ Se hizo con el objetivo de poder implenetarla de manera correcta.
 - random
 
 ### Creación del tablero
-Se utiliza `tablero = chess.Board()` para crear un tablero, el parametro que se le pasa es la notación FEN del estado del tablero que queremos:
+Se utiliza `tablero = chess.Board()` para crear un tablero, el parametro que se le pasa es la [Notación FEN](https://en.wikipedia.org/wiki/Forsyth–Edwards_Notation) del estado del tablero que queremos:
 - Si no se le pasa nada, por default te crea el tablero en su estado inicial
 - Si se le pasa `None` se crea un tablero vacío
 
@@ -40,6 +40,19 @@ a2 se encuentra a la derecha de a1
 ```
 Algo que se debe notar, según las reglas del ajedrez, jugando como las blancas, el recuadro a1 debe ubicarse en la esquina inferior izquierda, por lo que esta implementación está invertida verticalmente.
 
+#### Piezas
+- P/p = peon
+- N/n = caballo
+- B/b = alfil
+- Q/q = Dama
+- K/k = Rey
+- R/r = Torre
+
+##### Colores de las piezas
+El color de una pieza se guarda como un Booleano, donde:
+- `True` si la pieza es blanca
+- `False` si la pieza es negra
+
 ### Impresión del Tablero
 Pata poder visualizar el tablero en la terminal se puede hacer de dos maneras:
 - Con una función de la librería
@@ -59,14 +72,6 @@ R N B Q K B N R
 ```
 Donde las mayúsculas son las piezas blancas y las minúsculas son las negras.
 Se puede notar que no nos da las coordenadas
-
-##### Piezas
-- P/p = peon
-- N/n = caballo
-- B/b = alfil
-- Q/q = Dama
-- K/k = Rey
-- R/r = Torre
 
 #### Nuestras funciones 
 Sean nuestras funciones las siguientes:
@@ -115,4 +120,12 @@ Lo cual nos regresa:
 1 R N B Q K B N R 
   a b c d e f g h
 ```
-Nos podemos dar cuenta como es que el tablero está invertido en cuanto a los número y que ahora ya tenemos las coordenadas para facilitarnos la vida
+Nos podemos dar cuenta como es que el tablero está invertido en cuanto a los número y que ahora ya tenemos las coordenadas para facilitarnos la vida.
+
+###Notación de los cuadros
+Nótese que si bien la manera en la que esta guardado el código es con números del 0 al 63, ajedrez se juega utilizando coordenadas. 
+- Las filas se denotan con números del `1` al `8`
+- Las columnas se denotan con letras de la `a` a la `h`
+Por lo tanto tenemos que encontrar una forma de pasar de coordenadas a números. Por suerte la librería tiene ciertas funciones que nos permiten pasar de uno a otro:
+- Con `chess.square_name(0)` me regresa sus coordenadas, en este caso `a1`
+- `chess.parse_square("a1")` me regresa su número, en este caso `0`
