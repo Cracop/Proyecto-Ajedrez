@@ -124,8 +124,9 @@ Nos podemos dar cuenta como es que el tablero está invertido en cuanto a los n�
 
 ###Notación de los cuadros
 Nótese que si bien la manera en la que esta guardado el código es con números del 0 al 63, ajedrez se juega utilizando coordenadas. 
-- Las filas se denotan con números del `1` al `8`
-- Las columnas se denotan con letras de la `a` a la `h`
+- Las filas se denotan con números del `1` al `8`.
+- Las columnas se denotan con letras de la `a` a la `h`.
+
 Por lo tanto tenemos que encontrar una forma de pasar de coordenadas a números. Por suerte la librería tiene ciertas funciones que nos permiten pasar de uno a otro:
 - Con `chess.square_name(0)` me regresa sus coordenadas, en este caso `a1`
 - `chess.parse_square("a1")` me regresa su número, en este caso `0`
