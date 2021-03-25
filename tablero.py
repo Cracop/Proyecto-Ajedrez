@@ -139,9 +139,17 @@ def obtenFila(comienzo, final, tablero):
     fila+="\n"
     return fila
 
-imprimeTablero(tablero)
+#imprimeTablero(tablero)
+print("Turno de", tablero.turn, "\n")
+print(tablero, "\n")
+movida = chess.Move(1,16)
+print("Movida realizada", movida, "\n")
+tablero.push(movida)
+print("Turno de", tablero.turn , "\n")
+print(tablero, "\n")
+movida = chess.Move(62,45)
+print("Movida realizada", movida, "\n")
+tablero.push(movida)
+print("Turno de", tablero.turn , "\n")
 print(tablero)
 
-movida = chess.Move(1,25)
-tablero.push(movida)
-print(movida)

@@ -134,8 +134,9 @@ Por lo tanto tenemos que encontrar una forma de pasar de coordenadas a números.
 
 ### Generación de movimientos
 Para generar los movimientos utilizamos funciones de la librería, existen dos tipos de movimientos:
-- `tablero.legal_moves` te genera todos los movimientos legales en ese estado del tablero de acuerdo al jugador que tiene el turno
-- `tablero.pseudo_legal_moves` la diferencia con los movimientos legales, es que los pseudolegales pueden hacer que el Rey quede en jaque
+- `tablero.legal_moves` te genera todos los movimientos legales en ese estado del tablero de acuerdo al jugador que tiene el turno.
+- `tablero.pseudo_legal_moves` la diferencia con los movimientos legales, es que los pseudolegales pueden hacer que el Rey quede en jaque.
+
 Ambos te dan una especie de lista, la cual es iterable pero no indexable. Para casos futuros utilizaremos los movimientos completamente legales. 
 
 Para ver de quién es turno puedo ver una propiedad de `tablero.turn`
@@ -156,5 +157,59 @@ El tablero contiene una pila `tablero.move_stack` donde se almacenan todas las m
 - `tablero.pop()` regreso el tablero a a como estaba un turno antes.
 - `tablero.peek()` puedo ver la ultima movida que se hizo
 
+#### Ejemplo de dar jugadas
+```
+print("Turno de", tablero.turn, "\n")
+print(tablero, "\n")
+movida = chess.Move(1,16)
+print("Movida realizada", movida, "\n")
+tablero.push(movida)
+print("Turno de", tablero.turn , "\n")
+print(tablero, "\n")
+movida = chess.Move(62,45)
+print("Movida realizada", movida, "\n")
+tablero.push(movida)
+print("Turno de", tablero.turn , "\n")
+print(tablero)
+```
+Podemos ver como funciona push()
+```
+Turno de True 
+
+r n b q k b n r
+p p p p p p p p
+. . . . . . . .
+. . . . . . . .
+. . . . . . . .
+. . . . . . . .
+P P P P P P P P
+R N B Q K B N R 
+
+Movida realizada b1a3 
+
+Turno de False 
+
+r n b q k b n r
+p p p p p p p p
+. . . . . . . .
+. . . . . . . .
+. . . . . . . .
+N . . . . . . .
+P P P P P P P P
+R . B Q K B N R 
+
+Movida realizada g8f6 
+
+Turno de True 
+
+r n b q k b . r
+p p p p p p p p
+. . . . . n . .
+. . . . . . . .
+. . . . . . . .
+N . . . . . . .
+P P P P P P P P
+R . B Q K B N R
+```
 
 
