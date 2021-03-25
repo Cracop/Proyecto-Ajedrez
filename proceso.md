@@ -376,3 +376,5 @@ N . . P . . . .
 P P P . P P P P
 R . . Q K B N R
 ```
+### Condiciones
+Se puede checar si han sucedido diversos eventos en el tablero actual
