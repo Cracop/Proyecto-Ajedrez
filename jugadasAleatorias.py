@@ -39,7 +39,7 @@ def main():
     tablero = chess.Board()
     while not tablero.is_game_over():
         imprimeTablero(tablero)
-        print(tablero.turn)
+        #print(tablero.turn)
         if tablero.turn:
             """
             ins = input("Da la movida que quieras hacer con el formato a1a2\n")
@@ -55,6 +55,7 @@ def main():
             """
             movida = random.choice([movida for movida in tablero.legal_moves])
             tablero.push(movida)
+            print("las blancas movieron", movida)
         else:
             movida = random.choice([movida for movida in tablero.legal_moves])
             tablero.push(movida)

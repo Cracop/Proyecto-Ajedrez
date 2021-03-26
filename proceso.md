@@ -414,4 +414,69 @@ Se puede checar si han sucedido diversos eventos en el tablero actual:
 
 ### Resultados
 Para dar el resultado utilizamos `print(tablero.result())`
-Checar que significa el resultado que te da
+Te puede regresar diferentes resultados:
+- `1-0` si ganan las blancas
+- `0-1` si ganan las negras
+- `1/2-1/2`si hubo empate
+- `*` si está indeterminado i.e. si no ha acabado el juego
+
+## Desarrollo de la IA
+### Paso 1: Un Primer Juego Funcional
+Antes de pensar en desarrollar un programa fuera bueno jugando ajedrez, teníamos que estar seguros que sabíamos utilizar la librería para tener un programa con el que pudieramos tener una partida. 
+
+Para resolver ese primer problema, tomamos la decisión de el humano jugaría con las blancas y la computadora. Los movimientos serían dados por el usuario en forma de texto por medio de la terminal, mientras que la computadora elegiría un movimiento al azar cada vez que fuese su turno. 
+
+Utilizamos nuestras funciones `imprimeTablero` y `obtenFila` para poder presentarle al usuario un tablero donde se pudieran ver claramente las coordenadas de cada cuadro.
+
+Además de usar esas dos funciones e importar los modulos de `chess` y `random`, ese código consistió en lo siguiente:
+```
+def main():
+    tablero = chess.Board()
+    while not tablero.is_game_over():
+        imprimeTablero(tablero)
+        #print(tablero.turn)
+        if tablero.turn:
+            ins = input("Da la movida que quieras hacer con el formato a1a2\n")
+            try:
+                movida = chess.Move(chess.parse_square(ins[0:2]),chess.parse_square(ins[2:4]))
+                if movida in tablero.legal_moves:
+                    tablero.push(movida)
+                    print("las blancas movieron", movida)
+                else: 
+                    print("Movida ilegal")
+            except:
+                print("Coordenada inválida")
+        else:
+            movida = random.choice([movida for movida in tablero.legal_moves])
+            tablero.push(movida)
+            print("las negras movieron", movida)
+    imprimeTablero(tablero)
+    print(tablero.result())
+
+
+if __name__ == "__main__":
+    main()
+```
+El programa fue exitoso, las blancas solo se movían cuando el jugador daba una movida válida. 
+Si bien no se terminó ningún juego de manera manual, para probar que las condiciones de finalizar el juego se cumplían, se modificó el código para que ambos jugadores fueran la computadora realizando movimientos aleatorios. El código quedó así:
+```
+def main():
+    tablero = chess.Board()
+    while not tablero.is_game_over():
+        imprimeTablero(tablero)
+        #print(tablero.turn)
+        if tablero.turn:
+            movida = random.choice([movida for movida in tablero.legal_moves])
+            tablero.push(movida)
+            print("las blancas movieron", movida)
+        else:
+            movida = random.choice([movida for movida in tablero.legal_moves])
+            tablero.push(movida)
+            print("las negras movieron", movida)
+    imprimeTablero(tablero)
+    print(tablero.result())
+
+if __name__ == "__main__":
+    main()
+```
+Aquí podemos poner un porcentaje de los juegos, cuantos quedaron en empate y en cuantos hubo un ganador definitivo.
