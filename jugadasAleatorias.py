@@ -37,7 +37,7 @@ def obtenFila(comienzo, final, tablero):
 def main():
     tablero = chess.Board()
     while not tablero.is_game_over():
-        imprimeTablero(tablero)
+        #imprimeTablero(tablero)
         #print(tablero.turn)
         if tablero.turn:
             """
@@ -54,14 +54,27 @@ def main():
             """
             movida = random.choice([movida for movida in tablero.legal_moves])
             tablero.push(movida)
-            print("las blancas movieron", movida)
+            #print("las blancas movieron", movida)
         else:
             movida = random.choice([movida for movida in tablero.legal_moves])
             tablero.push(movida)
-            print("las negras movieron", movida)
-    imprimeTablero(tablero)
-    print(tablero.result())
+            #print("las negras movieron", movida)
+    #imprimeTablero(tablero)
+    return tablero.result()
 
 
 if __name__ == "__main__":
-    main()
+    empates = 0 #1/2-1/2
+    blancas = 0 #1-0
+    negras = 0  #0-1
+    for i in range(100):
+        resultado = main()
+        if resultado == "0-1":
+            negras += 1
+        elif resultado == "1-0":
+            blancas += 1
+        else: 
+            empates += 1
+    print("Las blancas ganaron:", blancas)
+    print("Las negras ganaron:", negras)
+    print("Empates", empates)

@@ -481,6 +481,11 @@ def main():
 if __name__ == "__main__":
     main()
 ```
-Aquí podemos poner un porcentaje de los juegos, cuantos quedaron en empate y en cuantos hubo un ganador definitivo.
+#### Resultados obtenidos
+Como una especie de métrica se llevaro a cabo `100` juegos donde la computadora cumplia los papeles de ambos jugadores llevando a cabo partidas aleatorias en cada turno.
+Los resultados obtenidos fueron:
+- `9` juegos los ganaron las blancas
+- `8` juegos los ganaron las negras
+- `83` juegos fueron empates
 
 ### Paso 2: Elección de las Heurísticas
