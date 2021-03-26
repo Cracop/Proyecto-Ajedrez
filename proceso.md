@@ -404,7 +404,7 @@ except:
     print("Coordenada inválida")
 imprimeTablero(tablero)
 ```
-### Condiciones
+### Condiciones de Fin de Juego
 Se puede checar si han sucedido diversos eventos en el tablero actual:
 - `tablero.is_check()` me dice si el jugador en turno se encuentra en jaque
 - `tablero.is_checkmate()` me dice si el jugador en turno se encuentra en jaquemate
