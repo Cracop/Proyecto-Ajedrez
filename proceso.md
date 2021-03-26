@@ -376,5 +376,33 @@ N . . P . . . .
 P P P . P P P P
 R . . Q K B N R
 ```
+#### Dar jugadas explicitas
+Como jugador humano, tengo que poderle dar una movida a jugar al programa, de preferencia mediante las coordenadas y no los números de los cuadros. Igual tengo que tener una manera de comprobar si una jugada es legal. Una fácil implementación de eso es lo siguiente
+``` 
+imprimeTablero(tablero)
+ino=input("Coloca la movida que quieras ")
+#ino="a2a3"
+movida = chess.Move(chess.parse_square(ino[0:2]),chess.parse_square(ino[2:4]))
+if movida in tablero.legal_moves:
+    tablero.push(movida)
+else: 
+    print("Movida inválida")
+imprimeTablero(tablero)
+```
+Ya con esto resolvimos que la movida dada por el usuario sea legal, pues se encuentra en los movimientos legales de ese estado del tablero. Sin embargo el programa todavía puede tronar si el usuario da unas coordenadas que se encuentren fuera del tablero o algo que no tengamos contemplado. Este problema se puede resolver fácilmente con un `try-except`
+```
+imprimeTablero(tablero)
+ino=input("Coloca la movida que quieras ")
+#ino="a2a3"
+try:
+    movida = chess.Move(chess.parse_square(ino[0:2]),chess.parse_square(ino[2:4]))
+    if movida in tablero.legal_moves:
+        tablero.push(movida)
+    else: 
+        print("Movida ilegal")
+except:
+    print("Coordenada inválida")
+imprimeTablero(tablero)
+```
 ### Condiciones
 Se puede checar si han sucedido diversos eventos en el tablero actual
