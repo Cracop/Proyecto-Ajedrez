@@ -482,3 +482,5 @@ if __name__ == "__main__":
     main()
 ```
 Aquí podemos poner un porcentaje de los juegos, cuantos quedaron en empate y en cuantos hubo un ganador definitivo.
+
+### Paso 2: Elección de las Heurísticas
