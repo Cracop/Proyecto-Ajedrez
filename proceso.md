@@ -405,4 +405,9 @@ except:
 imprimeTablero(tablero)
 ```
 ### Condiciones
-Se puede checar si han sucedido diversos eventos en el tablero actual
+Se puede checar si han sucedido diversos eventos en el tablero actual:
+- `tablero.is_check()` me dice si el jugador en turno se encuentra en jaque
+- `tablero.is_checkmate()` me dice si el jugador en turno se encuentra en jaquemate
+- `tablero.is_stalemate()` me dice si los jugadores se encuentran en empate
+- `tablero.is_insufficient_material()` me dice si los jugadores tienen insuficientes piezas como para llegar a un resultado. 
+- `tablero.is_game_over()` me dice si el juego a terminado ya sea por jaquemate, empate o piezas insuficientes.
