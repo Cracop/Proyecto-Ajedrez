@@ -175,3 +175,4 @@ except:
     print("Coordenada inválida")
 imprimeTablero(tablero)
 print(tablero.is_checkmate())
+print(tablero.result())

@@ -411,3 +411,7 @@ Se puede checar si han sucedido diversos eventos en el tablero actual:
 - `tablero.is_stalemate()` me dice si los jugadores se encuentran en empate
 - `tablero.is_insufficient_material()` me dice si los jugadores tienen insuficientes piezas como para llegar a un resultado. 
 - `tablero.is_game_over()` me dice si el juego a terminado ya sea por jaquemate, empate o piezas insuficientes.
+
+### Resultados
+Para dar el resultado utilizamos `print(tablero.result())`
+Checar que significa el resultado que te da

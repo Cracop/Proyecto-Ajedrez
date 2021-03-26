@@ -55,6 +55,7 @@ def main():
             movida = random.choice([movida for movida in tablero.legal_moves])
             tablero.push(movida)
             print("las negras movieron", movida)
+    print(tablero.resultado())
 
 
 if __name__ == "__main__":
