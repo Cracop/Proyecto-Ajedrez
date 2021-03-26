@@ -415,10 +415,10 @@ Se puede checar si han sucedido diversos eventos en el tablero actual:
 ### Resultados
 Para dar el resultado utilizamos `print(tablero.result())`
 Te puede regresar diferentes resultados:
-- `1-0` si ganan las blancas
-- `0-1` si ganan las negras
-- `1/2-1/2`si hubo empate
-- `*` si está indeterminado i.e. si no ha acabado el juego
+- `1-0` si ganan las blancas.
+- `0-1` si ganan las negras.
+- `1/2-1/2` si hubo empate.
+- `*` si está indeterminado i.e. si no ha acabado el juego.
 
 ## Desarrollo de la IA
 ### Paso 1: Un Primer Juego Funcional
