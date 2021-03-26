@@ -23,7 +23,6 @@ def imprimeTablero(tablero):
     texto += "  - - - - - - - -\n"
     texto += "  a b c d e f g h"
     print(texto)
-    #print(tablero)
 
 def obtenFila(comienzo, final, tablero):
     fila = ""
