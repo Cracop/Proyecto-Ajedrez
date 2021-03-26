@@ -41,6 +41,7 @@ def main():
         imprimeTablero(tablero)
         print(tablero.turn)
         if tablero.turn:
+            """
             ins = input("Da la movida que quieras hacer con el formato a1a2\n")
             try:
                 movida = chess.Move(chess.parse_square(ins[0:2]),chess.parse_square(ins[2:4]))
@@ -51,11 +52,14 @@ def main():
                     print("Movida ilegal")
             except:
                 print("Coordenada inválida")
+            """
+            movida = random.choice([movida for movida in tablero.legal_moves])
+            tablero.push(movida)
         else:
             movida = random.choice([movida for movida in tablero.legal_moves])
             tablero.push(movida)
             print("las negras movieron", movida)
-    print(tablero.resultado())
+    print(tablero.result())
 
 
 if __name__ == "__main__":
