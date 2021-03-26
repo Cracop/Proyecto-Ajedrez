@@ -489,6 +489,6 @@ Los resultados obtenidos fueron:
 - `83` juegos fueron empates
 
 ### Paso 2: Elección de las Heurísticas
-Para buscar que tipo de heuristicas aplicar y así decidir en que consistía una buena movida, recurrimos a la página de [chess programming](https://www.chessprogramming.org/Evaluation), donde vienen diferentes heurísticas que podríamos utilizar.
+Para buscar que tipo de heuristicas aplicar y así decidir en que consistía una buena movida, recurrimos a la página de [chess programming](https://www.chessprogramming.org/Evaluation), donde vienen diferentes maneras de evaluar un tablero.
 
 
