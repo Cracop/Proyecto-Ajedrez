@@ -139,7 +139,7 @@ def obtenFila(comienzo, final, tablero):
     fila+="\n"
     return fila
 
-#imprimeTablero(tablero)
+
 """
 print("Turno de", tablero.turn, "\n")
 print(tablero, "\n")
@@ -151,9 +151,27 @@ print("Ultima movida",tablero.peek())
 print("Turno de", tablero.turn , "\n")
 print(tablero)
 """
+"""
 print(tablero)
 for i in range(5):
     movida = random.choice([movida for movida in tablero.legal_moves])
     tablero.push(movida)
     print("")
     print(tablero)
+"""
+#print(tablero)
+#print(tablero.legal_moves)
+
+imprimeTablero(tablero)
+ino=input("Coloca la movida que quieras ")
+#ino="a2a3"
+try:
+    movida = chess.Move(chess.parse_square(ino[0:2]),chess.parse_square(ino[2:4]))
+    if movida in tablero.legal_moves:
+        tablero.push(movida)
+    else: 
+        print("Movida ilegal")
+except:
+    print("Coordenada inválida")
+imprimeTablero(tablero)
+print(tablero.is_checkmate())
