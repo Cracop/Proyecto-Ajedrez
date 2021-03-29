@@ -585,3 +585,15 @@ kingstable = [
 -30,-40,-40,-50,-50,-40,-40,-30,
 -30,-40,-40,-50,-50,-40,-40,-30]
 ```
+#### Función de evaluación de PeSTO
+Es una heurística desarrollada por [Ronald Friederich](https://www.chessprogramming.org/Ronald_Friederich), la cual no solo toma en cuenta el valor de las piezas y sus posiciones, sino que también que tan avanzado está el juego. Con esto se tienen diferentes tablas de posiciones para las piezas dependiendo si se está en el juego inicial, intermedio o final. 
+Para esto se tiene que tener una manera de definir en que fase se está, para eso se utiliza una especie de "puntaje de fase":
+- `FaseInicial = 5900`
+- `FaseIntermedia = 500`
+OK, esta sigo sin entender como cálcula el phase score, pero lo checamos luego
+
+#### Situaciones Finales
+Tenemos que tener una manera de poder distinguir cuando acaba un juego, por lo que utilizaremos las condiciones que ya tiene programadas la librería. Gracias a eso podemos diferenciar entre una partida ganada y un empate.
+- Si hay empate o insuficiencia material, regreso `0`
+- Si yo estoy haciendo el jaquemate, regreso un número demasiado grande, ejemplo `99999`
+- Si yo soy el que está recibiendo el empate, regreso un número demasiado pequeño, ejemplo `-99999`
