@@ -597,3 +597,5 @@ Tenemos que tener una manera de poder distinguir cuando acaba un juego, por lo q
 - Si hay empate o insuficiencia material, regreso `0`
 - Si yo estoy haciendo el jaquemate, regreso un número demasiado grande, ejemplo `99999`
 - Si yo soy el que está recibiendo el empate, regreso un número demasiado pequeño, ejemplo `-99999`
+
+### Paso 3: programación de las Funciones de Evaluación
