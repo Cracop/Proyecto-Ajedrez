@@ -46,7 +46,7 @@ Algo que se debe notar, según las reglas del ajedrez, jugando como las blancas,
 - N/n = caballo | 2
 - B/b = alfil | 3 
 - R/r = Torre | 4
-- Q/q = Dama | 5 
+- Q/q = Reina | 5 
 - K/k = Rey | 6
 
 ##### Colores de las piezas
@@ -426,9 +426,9 @@ Te puede regresar diferentes resultados:
 ### Paso 1: Un Primer Juego Funcional
 Antes de pensar en desarrollar un programa fuera bueno jugando ajedrez, teníamos que estar seguros que sabíamos utilizar la librería para tener un programa con el que pudieramos tener una partida. 
 
-Para resolver ese primer problema, tomamos la decisión de el humano jugaría con las blancas y la computadora. Los movimientos serían dados por el usuario en forma de texto por medio de la terminal, mientras que la computadora elegiría un movimiento al azar cada vez que fuese su turno. 
+Para resolver ese primer problema, tomamos la decisión de el humano jugaría con las blancas y la computadora con las negras. Los movimientos serían dados por el usuario en forma de texto por medio de la terminal, mientras que la computadora elegiría un movimiento al azar cada vez que fuese su turno. 
 
-Utilizamos nuestras funciones `imprimeTablero` y `obtenFila` para poder presentarle al usuario un tablero donde se pudieran ver claramente las coordenadas de cada cuadro.
+Utilizamos nuestras funciones `imprimeTablero()` y `obtenFila()` para poder presentarle al usuario un tablero donde se pudieran ver claramente las coordenadas de cada cuadro.
 
 Además de usar esas dos funciones e importar los modulos de `chess` y `random`, ese código consistió en lo siguiente:
 ```
@@ -489,6 +489,23 @@ Los resultados obtenidos fueron:
 - `83` juegos fueron empates
 
 ### Paso 2: Elección de las Heurísticas
-Para buscar que tipo de heuristicas aplicar y así decidir en que consistía una buena movida, recurrimos a la página de [chess programming](https://www.chessprogramming.org/Evaluation), donde vienen diferentes maneras de evaluar un tablero.
+Para buscar que tipo de heuristicas aplicar y así decidir en que consistía una buena movida, recurrimos a la página de [chess programming](https://www.chessprogramming.org/Evaluation), donde vienen diferentes maneras de evaluar un tablero. En este caso decidimos utilizar una evaluación dada por [Tomasz Michniewski](https://www.chessprogramming.org/Tomasz_Michniewski):
 
+#### Heurística Material
+Es un tipo de evaluación sencilla, pues solo consiste en sumar los valores de tus piezas y restarte los valores de las piezas del oponenete. 
+```
+Peón - 100
+Caballo - 320
+Alfil - 330
+Torre - 500
+Reina - 900
+Rey - 20000, a pesar de esto no se puede capturar
+```
+Es una heurística que se utiliza principalmente, pero en conjunto con otras evaluaciones. La razón de esto es porque si bien esta heurística incentiva la captura de piezas, no toma la posición de las piezas o el control del tablero. 
+La otra razón por la cual decidimos utilizar otra función fue porque teniamos la corazonada de que en posiciones donde no se pueden capturar las piezas, se explorarían todas las posibilidades y la poda no tendría mayor efecto. 
+
+#### Heurística Posicional
+Esto resuelve el problema anterior, pues así la computadora va a intentar sus piezas de manera que controle el tablero. La manera con la que esto se logra, es que a cada pieza se le asigna un valor dependiendo del cuadro que ocupe en el tablero. Se debe notar que el posicionamiento ideal es diferente para cada tipo de pieza.
+
+##### Posición de Peones
 
