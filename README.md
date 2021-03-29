@@ -656,52 +656,53 @@ if tablero.is_checkmate():
             return -9999
         else:
             return 9999
-if tablero.is_stalemate():
+elif tablero.is_stalemate():
         return 0
-if tablero.is_insufficient_material():
+else tablero.is_insufficient_material():
         return 0
 ```
 
 #### Función de Evaluación
 Con todo lo anterior definido, entonces la función nos queda de esta manera:
 ```
-def evaluar():
+def evaluar(tablero):
     
     if tablero.is_checkmate():
         if tablero.turn:
             return -9999
         else:
             return 9999
-    if tablero.is_stalemate():
+    elif tablero.is_stalemate():
         return 0
-    if tablero.is_insufficient_material():
+    elif tablero.is_insufficient_material():
         return 0
-    
-    peonB = len(tablero.pieces(chess.PAWN, chess.WHITE))
-    peonN = len(tablero.pieces(chess.PAWN, chess.BLACK))
-    caballoB = len(tablero.pieces(chess.KNIGHT, chess.WHITE))
-    caballoN = len(tablero.pieces(chess.KNIGHT, chess.BLACK))
-    alfilB = len(tablero.pieces(chess.BISHOP, chess.WHITE))
-    alfilN = len(tablero.pieces(chess.BISHOP, chess.BLACK))
-    torreB = len(tablero.pieces(chess.ROOK, chess.WHITE))
-    torreN = len(tablero.pieces(chess.ROOK, chess.BLACK))
-    reinaB = len(tablero.pieces(chess.QUEEN, chess.WHITE))
-    reinaN = len(tablero.pieces(chess.QUEEN, chess.BLACK))
-    
-    valorMaterial = 100 * (peonB - peonN) + 320 * (caballoB - caballoN) + 330 * (alfilB - alfilN) + 500 * (torreB - torreN) + 900 * (reinaB - reinaN)
-    
-    peonPos = sum([pawntable[i] for i in tablero.pieces(chess.PAWN, chess.WHITE)]) + sum([-pawntable[chess.square_mirror(i)] for i in tablero.pieces(chess.PAWN, chess.BLACK)])
-    caballoPos = sum([knightstable[i] for i in tablero.pieces(chess.KNIGHT, chess.WHITE)]) + sum([-knightstable[chess.square_mirror(i)] for i in tablero.pieces(chess.KNIGHT, chess.BLACK)])
-    alfilPos = sum([bishopstable[i] for i in tablero.pieces(chess.BISHOP, chess.WHITE)]) + sum([-bishopstable[chess.square_mirror(i)] for i in tablero.pieces(chess.BISHOP, chess.BLACK)])
-    torrePos = sum([rookstable[i] for i in tablero.pieces(chess.ROOK, chess.WHITE)]) + sum([-rookstable[chess.square_mirror(i)] for i in tablero.pieces(chess.ROOK, chess.BLACK)])
-    reinaPos = sum([queenstable[i] for i in tablero.pieces(chess.QUEEN, chess.WHITE)]) + sum([-queenstable[chess.square_mirror(i)] for i in tablero.pieces(chess.QUEEN, chess.BLACK)])
-    reyPos = sum([kingstable[i] for i in tablero.pieces(chess.KING, chess.WHITE)]) + sum([-kingstable[chess.square_mirror(i)] for i in tablero.pieces(chess.KING, chess.BLACK)])
-    
-    valorEval = valorMaterial + peonPos + caballoPos + alfilPos + torrePos + reinaPos + reyPos
-    #Esto lo hago porque lo bueno para mí es malo para mi oponente
-    if tablero.turn:
-        return valorEval
     else:
-        return -valorEval
+        peonB = len(tablero.pieces(chess.PAWN, chess.WHITE))
+        peonN = len(tablero.pieces(chess.PAWN, chess.BLACK))
+        caballoB = len(tablero.pieces(chess.KNIGHT, chess.WHITE))
+        caballoN = len(tablero.pieces(chess.KNIGHT, chess.BLACK))
+        alfilB = len(tablero.pieces(chess.BISHOP, chess.WHITE))
+        alfilN = len(tablero.pieces(chess.BISHOP, chess.BLACK))
+        torreB = len(tablero.pieces(chess.ROOK, chess.WHITE))
+        torreN = len(tablero.pieces(chess.ROOK, chess.BLACK))
+        reinaB = len(tablero.pieces(chess.QUEEN, chess.WHITE))
+        reinaN = len(tablero.pieces(chess.QUEEN, chess.BLACK))
+    
+        valorMaterial = 100 * (peonB - peonN) + 320 * (caballoB - caballoN) + 330 * (alfilB - alfilN) + 500 * (torreB - torreN) + 900 * (reinaB - reinaN)
+    
+        peonPos = sum([pawntable[i] for i in tablero.pieces(chess.PAWN, chess.WHITE)]) + sum([-pawntable[chess.square_mirror(i)] for i in tablero.pieces(chess.PAWN, chess.BLACK)])
+        caballoPos = sum([knightstable[i] for i in tablero.pieces(chess.KNIGHT, chess.WHITE)]) + sum([-knightstable[chess.square_mirror(i)] for i in tablero.pieces(chess.KNIGHT, chess.BLACK)])
+        alfilPos = sum([bishopstable[i] for i in tablero.pieces(chess.BISHOP, chess.WHITE)]) + sum([-bishopstable[chess.square_mirror(i)] for i in tablero.pieces(chess.BISHOP, chess.BLACK)])
+        torrePos = sum([rookstable[i] for i in tablero.pieces(chess.ROOK, chess.WHITE)]) + sum([-rookstable[chess.square_mirror(i)] for i in tablero.pieces(chess.ROOK, chess.BLACK)])
+        reinaPos = sum([queenstable[i] for i in tablero.pieces(chess.QUEEN, chess.WHITE)]) + sum([-queenstable[chess.square_mirror(i)] for i in tablero.pieces(chess.QUEEN, chess.BLACK)])
+        reyPos = sum([kingstable[i] for i in tablero.pieces(chess.KING, chess.WHITE)]) + sum([-kingstable[chess.square_mirror(i)] for i in tablero.pieces(chess.KING, chess.BLACK)])
+    
+        valorEval = valorMaterial + peonPos + caballoPos + alfilPos + torrePos + reinaPos + reyPos
+    #Esto lo hago porque lo bueno para mí es malo para mi oponente
+        if tablero.turn:
+            return valorEval
+        else:
+            return -valorEval
+
 
 ```
