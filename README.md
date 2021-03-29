@@ -489,7 +489,7 @@ Los resultados obtenidos fueron:
 - `83` juegos fueron empates
 
 ### Paso 2: Elección de las Heurísticas
-Para buscar que tipo de heuristicas aplicar y así decidir en que consistía una buena movida, recurrimos a la página de [chess programming](https://www.chessprogramming.org/Evaluation), donde vienen diferentes maneras de evaluar un tablero. En este caso decidimos utilizar una evaluación dada por [Tomasz Michniewski](https://www.chessprogramming.org/Tomasz_Michniewski):
+Para buscar que tipo de heuristicas aplicar y así decidir en que consistía una buena movida, recurrimos a la página de [chess programming](https://www.chessprogramming.org/Evaluation), donde vienen diferentes maneras de evaluar un tablero. En este caso decidimos utilizar evaluaciones dadas por [Tomasz Michniewski](https://www.chessprogramming.org/Tomasz_Michniewski):
 
 #### Heurística Material
 Es un tipo de evaluación sencilla, pues solo consiste en sumar los valores de tus piezas y restarte los valores de las piezas del oponenete. 
@@ -505,7 +505,83 @@ Es una heurística que se utiliza principalmente, pero en conjunto con otras eva
 La otra razón por la cual decidimos utilizar otra función fue porque teniamos la corazonada de que en posiciones donde no se pueden capturar las piezas, se explorarían todas las posibilidades y la poda no tendría mayor efecto. 
 
 #### Heurística Posicional
-Esto resuelve el problema anterior, pues así la computadora va a intentar sus piezas de manera que controle el tablero. La manera con la que esto se logra, es que a cada pieza se le asigna un valor dependiendo del cuadro que ocupe en el tablero. Se debe notar que el posicionamiento ideal es diferente para cada tipo de pieza.
+Esto resuelve el problema anterior, pues así la computadora va a intentar sus piezas de manera que controle el tablero. La manera con la que esto se logra, es que a cada pieza se le asigna un valor dependiendo del cuadro que ocupe en el tablero. Se debe notar que el posicionamiento ideal es diferente para cada tipo de pieza. En las tablas, si un valor es positivo, entonces la computadora va a intentar poner una pieza ahí.
 
-##### Posición de Peones
-
+##### Peones
+Su estrategia principal avanzar, de igual manera lo que se trata es evitar que los peones centrales se queden inmóviles.
+```
+pawntable = [
+ 0,  0,  0,  0,  0,  0,  0,  0,
+ 5, 10, 10,-20,-20, 10, 10,  5,
+ 5, -5,-10,  0,  0,-10, -5,  5,
+ 0,  0,  0, 20, 20,  0,  0,  0,
+ 5,  5, 10, 25, 25, 10,  5,  5,
+10, 10, 20, 30, 30, 20, 10, 10,
+50, 50, 50, 50, 50, 50, 50, 50,
+ 0,  0,  0,  0,  0,  0,  0,  0]
+```
+##### Caballo
+Mientras se encuentren en el centro es una estrategia válida, estar en las orillas es una pésima idea.
+```
+knightstable = [
+-50,-40,-30,-30,-30,-30,-40,-50,
+-40,-20,  0,  5,  5,  0,-20,-40,
+-30,  5, 10, 15, 15, 10,  5,-30,
+-30,  0, 15, 20, 20, 15,  0,-30,
+-30,  5, 15, 20, 20, 15,  5,-30,
+-30,  0, 10, 15, 15, 10,  0,-30,
+-40,-20,  0,  0,  0,  0,-20,-40,
+-50,-40,-30,-30,-30,-30,-40,-50]
+```
+##### Alfil
+La idea es que eviten estar en las orillas y esquinas
+```
+bishopstable = [
+-20,-10,-10,-10,-10,-10,-10,-20,
+-10,  5,  0,  0,  0,  0,  5,-10,
+-10, 10, 10, 10, 10, 10, 10,-10,
+-10,  0, 10, 10, 10, 10,  0,-10,
+-10,  5,  5, 10, 10,  5,  5,-10,
+-10,  0,  5, 10, 10,  5,  0,-10,
+-10,  0,  0,  0,  0,  0,  0,-10,
+-20,-10,-10,-10,-10,-10,-10,-20]
+```
+##### Torres
+Deberían ocupar la septima fila y evitar las columnas a y h
+```
+rookstable = [
+  0,  0,  0,  5,  5,  0,  0,  0,
+ -5,  0,  0,  0,  0,  0,  0, -5,
+ -5,  0,  0,  0,  0,  0,  0, -5,
+ -5,  0,  0,  0,  0,  0,  0, -5,
+ -5,  0,  0,  0,  0,  0,  0, -5,
+ -5,  0,  0,  0,  0,  0,  0, -5,
+  5, 10, 10, 10, 10, 10, 10,  5,
+ 0,  0,  0,  0,  0,  0,  0,  0]
+```
+##### Reina
+Debería estar en el centro para así poder controlar una mayor cantidad de cuadros
+```
+queenstable = [
+-20,-10,-10, -5, -5,-10,-10,-20,
+-10,  0,  0,  0,  0,  0,  0,-10,
+-10,  5,  5,  5,  5,  5,  0,-10,
+  0,  0,  5,  5,  5,  5,  0, -5,
+ -5,  0,  5,  5,  5,  5,  0, -5,
+-10,  0,  5,  5,  5,  5,  0,-10,
+-10,  0,  0,  0,  0,  0,  0,-10,
+-20,-10,-10, -5, -5,-10,-10,-20]
+```
+##### Rey
+En el juego inicial e intermedio el Rey se debería quedar detrás de los peones, pero la situación es diferente para el juego final. 
+```
+kingstable = [
+ 20, 30, 10,  0,  0, 10, 30, 20,
+ 20, 20,  0,  0,  0,  0, 20, 20,
+-10,-20,-20,-20,-20,-20,-20,-10,
+-20,-30,-30,-40,-40,-30,-30,-20,
+-30,-40,-40,-50,-50,-40,-40,-30,
+-30,-40,-40,-50,-50,-40,-40,-30,
+-30,-40,-40,-50,-50,-40,-40,-30,
+-30,-40,-40,-50,-50,-40,-40,-30]
+```
