@@ -2,6 +2,68 @@
 import chess 
 import random
 
+pawntable = [
+ 0,  0,  0,  0,  0,  0,  0,  0,
+ 5, 10, 10,-20,-20, 10, 10,  5,
+ 5, -5,-10,  0,  0,-10, -5,  5,
+ 0,  0,  0, 20, 20,  0,  0,  0,
+ 5,  5, 10, 25, 25, 10,  5,  5,
+10, 10, 20, 30, 30, 20, 10, 10,
+50, 50, 50, 50, 50, 50, 50, 50,
+ 0,  0,  0,  0,  0,  0,  0,  0]
+
+knightstable = [
+-50,-40,-30,-30,-30,-30,-40,-50,
+-40,-20,  0,  5,  5,  0,-20,-40,
+-30,  5, 10, 15, 15, 10,  5,-30,
+-30,  0, 15, 20, 20, 15,  0,-30,
+-30,  5, 15, 20, 20, 15,  5,-30,
+-30,  0, 10, 15, 15, 10,  0,-30,
+-40,-20,  0,  0,  0,  0,-20,-40,
+-50,-40,-30,-30,-30,-30,-40,-50]
+
+bishopstable = [
+-20,-10,-10,-10,-10,-10,-10,-20,
+-10,  5,  0,  0,  0,  0,  5,-10,
+-10, 10, 10, 10, 10, 10, 10,-10,
+-10,  0, 10, 10, 10, 10,  0,-10,
+-10,  5,  5, 10, 10,  5,  5,-10,
+-10,  0,  5, 10, 10,  5,  0,-10,
+-10,  0,  0,  0,  0,  0,  0,-10,
+-20,-10,-10,-10,-10,-10,-10,-20]
+
+rookstable = [
+  0,  0,  0,  5,  5,  0,  0,  0,
+ -5,  0,  0,  0,  0,  0,  0, -5,
+ -5,  0,  0,  0,  0,  0,  0, -5,
+ -5,  0,  0,  0,  0,  0,  0, -5,
+ -5,  0,  0,  0,  0,  0,  0, -5,
+ -5,  0,  0,  0,  0,  0,  0, -5,
+  5, 10, 10, 10, 10, 10, 10,  5,
+ 0,  0,  0,  0,  0,  0,  0,  0]
+
+queenstable = [
+-20,-10,-10, -5, -5,-10,-10,-20,
+-10,  0,  0,  0,  0,  0,  0,-10,
+-10,  5,  5,  5,  5,  5,  0,-10,
+  0,  0,  5,  5,  5,  5,  0, -5,
+ -5,  0,  5,  5,  5,  5,  0, -5,
+-10,  0,  5,  5,  5,  5,  0,-10,
+-10,  0,  0,  0,  0,  0,  0,-10,
+-20,-10,-10, -5, -5,-10,-10,-20]
+
+kingstable = [
+ 20, 30, 10,  0,  0, 10, 30, 20,
+ 20, 20,  0,  0,  0,  0, 20, 20,
+-10,-20,-20,-20,-20,-20,-20,-10,
+-20,-30,-30,-40,-40,-30,-30,-20,
+-30,-40,-40,-50,-50,-40,-40,-30,
+-30,-40,-40,-50,-50,-40,-40,-30,
+-30,-40,-40,-50,-50,-40,-40,-30,
+-30,-40,-40,-50,-50,-40,-40,-30]
+
+
+
 def imprimeTablero(tablero):
     texto=""
     texto += "8|"
@@ -33,6 +95,46 @@ def obtenFila(comienzo, final, tablero):
             fila+=str(tablero.piece_at(i))+" "
     fila+="\n"
     return fila
+
+def evaluar(tablero):
+    
+    if tablero.is_checkmate():
+        if tablero.turn:
+            return -9999
+        else:
+            return 9999
+    if tablero.is_stalemate():
+        return 0
+    if tablero.is_insufficient_material():
+        return 0
+    
+    peonB = len(tablero.pieces(chess.PAWN, chess.WHITE))
+    peonN = len(tablero.pieces(chess.PAWN, chess.BLACK))
+    caballoB = len(tablero.pieces(chess.KNIGHT, chess.WHITE))
+    caballoN = len(tablero.pieces(chess.KNIGHT, chess.BLACK))
+    alfilB = len(tablero.pieces(chess.BISHOP, chess.WHITE))
+    alfilN = len(tablero.pieces(chess.BISHOP, chess.BLACK))
+    torreB = len(tablero.pieces(chess.ROOK, chess.WHITE))
+    torreN = len(tablero.pieces(chess.ROOK, chess.BLACK))
+    reinaB = len(tablero.pieces(chess.QUEEN, chess.WHITE))
+    reinaN = len(tablero.pieces(chess.QUEEN, chess.BLACK))
+    
+    valorMaterial = 100 * (peonB - peonN) + 320 * (caballoB - caballoN) + 330 * (alfilB - alfilN) + 500 * (torreB - torreN) + 900 * (reinaB - reinaN)
+    
+    peonPos = sum([pawntable[i] for i in tablero.pieces(chess.PAWN, chess.WHITE)]) + sum([-pawntable[chess.square_mirror(i)] for i in tablero.pieces(chess.PAWN, chess.BLACK)])
+    caballoPos = sum([knightstable[i] for i in tablero.pieces(chess.KNIGHT, chess.WHITE)]) + sum([-knightstable[chess.square_mirror(i)] for i in tablero.pieces(chess.KNIGHT, chess.BLACK)])
+    alfilPos = sum([bishopstable[i] for i in tablero.pieces(chess.BISHOP, chess.WHITE)]) + sum([-bishopstable[chess.square_mirror(i)] for i in tablero.pieces(chess.BISHOP, chess.BLACK)])
+    torrePos = sum([rookstable[i] for i in tablero.pieces(chess.ROOK, chess.WHITE)]) + sum([-rookstable[chess.square_mirror(i)] for i in tablero.pieces(chess.ROOK, chess.BLACK)])
+    reinaPos = sum([queenstable[i] for i in tablero.pieces(chess.QUEEN, chess.WHITE)]) + sum([-queenstable[chess.square_mirror(i)] for i in tablero.pieces(chess.QUEEN, chess.BLACK)])
+    reyPos = sum([kingstable[i] for i in tablero.pieces(chess.KING, chess.WHITE)]) + sum([-kingstable[chess.square_mirror(i)] for i in tablero.pieces(chess.KING, chess.BLACK)])
+    
+    valorEval = valorMaterial + peonPos + caballoPos + alfilPos + torrePos + reinaPos + reyPos
+    #Esto lo hago porque lo bueno para mí es malo para mi oponente
+    if tablero.turn:
+        return valorEval
+    else:
+        return -valorEval
+
 
 def main():
     tablero = chess.Board()
@@ -67,7 +169,7 @@ if __name__ == "__main__":
     empates = 0 #1/2-1/2
     blancas = 0 #1-0
     negras = 0  #0-1
-    for i in range(100):
+    for i in range(1):
         resultado = main()
         if resultado == "0-1":
             negras += 1

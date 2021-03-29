@@ -41,18 +41,29 @@ a2 se encuentra a la derecha de a1
 Algo que se debe notar, según las reglas del ajedrez, jugando como las blancas, el recuadro a1 debe ubicarse en la esquina inferior izquierda, por lo que esta implementación está invertida verticalmente.
 
 #### Piezas
-(Simbolo|Tipo)
+Así se ven en el tablero (Simbolo|Tipo)
 - P/p = peon | 1
 - N/n = caballo | 2
 - B/b = alfil | 3 
 - R/r = Torre | 4
 - Q/q = Reina | 5 
 - K/k = Rey | 6
+Así se guardan en el código
+- `chess.PAWN: chess.PieceType = 1`
+- `chess.KNIGHT: chess.PieceType = 2`
+- `chess.BISHOP: chess.PieceType = 3`
+- `chess.ROOK: chess.PieceType = 4`
+- `chess.QUEEN: chess.PieceType = 5`
+- `chess.KING: chess.PieceType = 6`
 
 ##### Colores de las piezas
 El color de una pieza se guarda como un Booleano, donde:
-- `True` si la pieza es blanca
-- `False` si la pieza es negra
+- `chess.WHITE: chess.Color = True`
+- `chess.BLACK: chess.Color = False`
+
+##### Acceder a las piezas
+Puedo acceder a las piezas de diferentes maneras:
+print(tablero.pieces(chess.BISHOP, chess.WHITE)) o 
 
 ### Impresión del Tablero
 Pata poder visualizar el tablero en la terminal se puede hacer de dos maneras:
@@ -590,6 +601,7 @@ Es una heurística desarrollada por [Ronald Friederich](https://www.chessprogram
 Para esto se tiene que tener una manera de definir en que fase se está, para eso se utiliza una especie de "puntaje de fase":
 - `FaseInicial = 5900`
 - `FaseIntermedia = 500`
+
 OK, esta sigo sin entender como cálcula el phase score, pero lo checamos luego
 
 #### Situaciones Finales
@@ -598,4 +610,98 @@ Tenemos que tener una manera de poder distinguir cuando acaba un juego, por lo q
 - Si yo estoy haciendo el jaquemate, regreso un número demasiado grande, ejemplo `99999`
 - Si yo soy el que está recibiendo el empate, regreso un número demasiado pequeño, ejemplo `-99999`
 
-### Paso 3: programación de las Funciones de Evaluación
+### Paso 3: Programación de las Funciones de Evaluación
+Ya que tenemos las heurísticas seleccionadas, pogramamos una función de evaluación que tomé en cuenta los factores que queremos. 
+##### Evaluación Material
+Primero tenemos que saber cuantas piezas de cada tipo tenemos, eso se puede sacar de la siguiente manera:
+```
+peonB = len(tablero.pieces(chess.PAWN, chess.WHITE))
+peonN = len(tablero.pieces(chess.PAWN, chess.BLACK))
+caballoB = len(tablero.pieces(chess.KNIGHT, chess.WHITE))
+caballoN = len(tablero.pieces(chess.KNIGHT, chess.BLACK))
+alfilB = len(tablero.pieces(chess.BISHOP, chess.WHITE))
+alfilN = len(tablero.pieces(chess.BISHOP, chess.BLACK))
+torreB = len(tablero.pieces(chess.ROOK, chess.WHITE))
+torreN = len(tablero.pieces(chess.ROOK, chess.BLACK))
+reinaB = len(tablero.pieces(chess.QUEEN, chess.WHITE))
+reinaN = len(tablero.pieces(chess.QUEEN, chess.BLACK))
+```
+Utilizando los valores por pieza que se dieron con anterioridad, tenemos que se puede calcular el valor material de esta forma:
+```
+valorMaterial = 100 * (peonB - peonN) + 320 * (caballoB - caballoN) + 330 * (alfilB - alfilN) + 500 * (torreB - torreN) + 900 * (reinaB - reinaN)
+```
+
+#### Evaluación por Posición
+Utilizando las tablas que dimos anteriormente, sumamos el puntaje de cada tabla individual de acuerdo a su posición en el tablero. Nótese que se tienen que invertir verticalmente las posiciones cuando quiero calcular el valor para el otro jugador, eso lo hacemos con `chess.square_mirror(square: chess.Square)` .  De esa forma ese valor se puede sacar así
+```
+peonPos = sum([pawntable[i] for i in tablero.pieces(chess.PAWN, chess.WHITE)]) + sum([-pawntable[chess.square_mirror(i)] for i in tablero.pieces(chess.PAWN, chess.BLACK)])
+
+caballoPos = sum([knightstable[i] for i in tablero.pieces(chess.KNIGHT, chess.WHITE)]) + sum([-knightstable[chess.square_mirror(i)] for i in tablero.pieces(chess.KNIGHT, chess.BLACK)])
+
+alfilPos = sum([bishopstable[i] for i in tablero.pieces(chess.BISHOP, chess.WHITE)]) + sum([-bishopstable[chess.square_mirror(i)] for i in tablero.pieces(chess.BISHOP, chess.BLACK)])
+
+torrePos = sum([rookstable[i] for i in tablero.pieces(chess.ROOK, chess.WHITE)]) + sum([-rookstable[chess.square_mirror(i)] for i in tablero.pieces(chess.ROOK, chess.BLACK)])
+
+reinaPos = sum([queenstable[i] for i in tablero.pieces(chess.QUEEN, chess.WHITE)]) + sum([-queenstable[chess.square_mirror(i)] for i in tablero.pieces(chess.QUEEN, chess.BLACK)])
+
+reyPos = sum([kingstable[i] for i in tablero.pieces(chess.KING, chess.WHITE)]) + sum([-kingstable[chess.square_mirror(i)] for i in tablero.pieces(chess.KING, chess.BLACK)])
+
+```
+
+#### Evaluación por Situación Final
+Aquí tomamos en cuenta si en la posición actual se esta en jaquemate, insuficiencia material o empate:
+```
+if tablero.is_checkmate():
+        if tablero.turn:
+            return -9999
+        else:
+            return 9999
+if tablero.is_stalemate():
+        return 0
+if tablero.is_insufficient_material():
+        return 0
+```
+
+#### Función de Evaluación
+Con todo lo anterior definido, entonces la función nos queda de esta manera:
+```
+def evaluar():
+    
+    if tablero.is_checkmate():
+        if tablero.turn:
+            return -9999
+        else:
+            return 9999
+    if tablero.is_stalemate():
+        return 0
+    if tablero.is_insufficient_material():
+        return 0
+    
+    peonB = len(tablero.pieces(chess.PAWN, chess.WHITE))
+    peonN = len(tablero.pieces(chess.PAWN, chess.BLACK))
+    caballoB = len(tablero.pieces(chess.KNIGHT, chess.WHITE))
+    caballoN = len(tablero.pieces(chess.KNIGHT, chess.BLACK))
+    alfilB = len(tablero.pieces(chess.BISHOP, chess.WHITE))
+    alfilN = len(tablero.pieces(chess.BISHOP, chess.BLACK))
+    torreB = len(tablero.pieces(chess.ROOK, chess.WHITE))
+    torreN = len(tablero.pieces(chess.ROOK, chess.BLACK))
+    reinaB = len(tablero.pieces(chess.QUEEN, chess.WHITE))
+    reinaN = len(tablero.pieces(chess.QUEEN, chess.BLACK))
+    
+    valorMaterial = 100 * (peonB - peonN) + 320 * (caballoB - caballoN) + 330 * (alfilB - alfilN) + 500 * (torreB - torreN) + 900 * (reinaB - reinaN)
+    
+    peonPos = sum([pawntable[i] for i in tablero.pieces(chess.PAWN, chess.WHITE)]) + sum([-pawntable[chess.square_mirror(i)] for i in tablero.pieces(chess.PAWN, chess.BLACK)])
+    caballoPos = sum([knightstable[i] for i in tablero.pieces(chess.KNIGHT, chess.WHITE)]) + sum([-knightstable[chess.square_mirror(i)] for i in tablero.pieces(chess.KNIGHT, chess.BLACK)])
+    alfilPos = sum([bishopstable[i] for i in tablero.pieces(chess.BISHOP, chess.WHITE)]) + sum([-bishopstable[chess.square_mirror(i)] for i in tablero.pieces(chess.BISHOP, chess.BLACK)])
+    torrePos = sum([rookstable[i] for i in tablero.pieces(chess.ROOK, chess.WHITE)]) + sum([-rookstable[chess.square_mirror(i)] for i in tablero.pieces(chess.ROOK, chess.BLACK)])
+    reinaPos = sum([queenstable[i] for i in tablero.pieces(chess.QUEEN, chess.WHITE)]) + sum([-queenstable[chess.square_mirror(i)] for i in tablero.pieces(chess.QUEEN, chess.BLACK)])
+    reyPos = sum([kingstable[i] for i in tablero.pieces(chess.KING, chess.WHITE)]) + sum([-kingstable[chess.square_mirror(i)] for i in tablero.pieces(chess.KING, chess.BLACK)])
+    
+    valorEval = valorMaterial + peonPos + caballoPos + alfilPos + torrePos + reinaPos + reyPos
+    #Esto lo hago porque lo bueno para mí es malo para mi oponente
+    if tablero.turn:
+        return valorEval
+    else:
+        return -valorEval
+
+```
