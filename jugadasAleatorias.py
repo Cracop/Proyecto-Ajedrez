@@ -135,13 +135,41 @@ def evaluar(tablero):
         else:
             return -valorEval
 
+def negamax(tablero, alfa, beta, profundidad):
+    maxEval = -999999
+    if profundidad == 0 or not tablero.is_game_over():
+        return evaluar(tablero)
+    for movida in tablero.legal_moves:
+        tablero.push(movida)
+        valorEval = -(negamax(tablero, -beta, -alfa, profundidad-1))
+        maxEval = max(maxEval, valorEval)
+        alfa = max(alfa, valorEval)
+        if alfa >= beta:
+            break
+    return maxEval
+    
+def mejorMovimiento(tablero, profundidad):
+    mejorMovimiento = chess.Move.null() #Solo pasó el turno al otro jugador
+    maxEval = -999999
+    alfa = -999999
+    beta = 999999
+    for movimiento in tablero.legal_moves:
+        tablero.push(movimiento)
+        valorEval = -(negamax(tablero, -beta, -alfa, profundidad-1))
+        if valorEval > maxEval:
+            maxEval = valorEval
+            mejorMovimiento = movimiento
+        alfa = max(valorEval, alfa)
+        tablero.pop()
+    return mejorMovimiento
 
 def main():
     tablero = chess.Board()
     while not tablero.is_game_over():
-        #imprimeTablero(tablero)
+    #for i in range(16):
+        imprimeTablero(tablero)
+        #print("")
         #print(tablero.turn)
-        evaluar(tablero)
         if tablero.turn:
             """
             ins = input("Da la movida que quieras hacer con el formato a1a2\n")
@@ -155,14 +183,16 @@ def main():
             except:
                 print("Coordenada inválida")
             """
-            movida = random.choice([movida for movida in tablero.legal_moves])
-            tablero.push(movida)
+            #movida = random.choice([movida for movida in tablero.legal_moves])
+            #movida = mejorMovimiento(tablero, 1)
+            #tablero.push(movida)
             #print("las blancas movieron", movida)
         else:
-            movida = random.choice([movida for movida in tablero.legal_moves])
+            #movida = random.choice([movida for movida in tablero.legal_moves])
+            movida = mejorMovimiento(tablero, 7)
             tablero.push(movida)
             #print("las negras movieron", movida)
-    #imprimeTablero(tablero)
+    imprimeTablero(tablero)
     return tablero.result()
 
 
@@ -170,7 +200,7 @@ if __name__ == "__main__":
     empates = 0 #1/2-1/2
     blancas = 0 #1-0
     negras = 0  #0-1
-    for i in range(1):
+    for i in range(100):
         resultado = main()
         if resultado == "0-1":
             negras += 1

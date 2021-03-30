@@ -808,3 +808,62 @@ function mejorMovimiento(profundidad)
     return mejorMovimiento
 ```
 ### Paso 5: Programación de la IA
+Con base al pseudocódigo anterior, nos quedaron las siguientes funciones:
+#### NEGAMAX
+```
+def negamax(tablero, alfa, beta, profundidad):
+    maxEval = -999999
+    if profundidad == 0 or not tablero.is_game_over():
+        return evaluar(tablero)
+    for movida in tablero.legal_moves:
+        tablero.push(movida)
+        valorEval = -(negamax(tablero, -beta, -alfa, profundidad-1))
+        maxEval = max(maxEval, valorEval)
+        alfa = max(alfa, valorEval)
+        if alfa >= beta:
+            break
+    return maxEval
+```
+#### Mejor Movimiento
+```
+def mejorMovimiento(tablero, profundidad):
+    mejorMovimiento = chess.Move.null() #Solo pasó el turno al otro jugador
+    maxEval = -999999
+    alfa = -999999
+    beta = 999999
+    for movimiento in tablero.legal_moves:
+        tablero.push(movimiento)
+        valorEval = -(negamax(tablero, -beta, -alfa, profundidad-1))
+        if valorEval > maxEval:
+            maxEval = valorEval
+            mejorMovimiento = movimiento
+        alfa = max(valorEval, alfa)
+        tablero.pop()
+    return mejorMovimiento
+```
+#### Función Principal
+```
+def main():
+    tablero = chess.Board()
+    while not tablero.is_game_over():
+    #for i in range(16):
+        #imprimeTablero(tablero)
+        if tablero.turn:
+            ins = input("Da la movida que quieras hacer con el formato a1a2\n")
+            try:
+                movida = chess.Move(chess.parse_square(ins[0:2]),chess.parse_square(ins[2:4]))
+                if movida in tablero.legal_moves:
+                    tablero.push(movida)
+                    print("las blancas movieron", movida)
+                else: 
+                    print("Movida ilegal")
+            except:
+                print("Coordenada inválida")
+        else:
+            #movida = random.choice([movida for movida in tablero.legal_moves])
+            movida = mejorMovimiento(tablero, 7)
+            tablero.push(movida)
+            #print("las negras movieron", movida)
+    #imprimeTablero(tablero)
+    return tablero.result()
+```
