@@ -167,8 +167,7 @@ def main():
     tablero = chess.Board()
     while not tablero.is_game_over():
     #for i in range(16):
-        imprimeTablero(tablero)
-        #print("")
+        #imprimeTablero(tablero)
         #print(tablero.turn)
         if tablero.turn:
             """
@@ -183,16 +182,16 @@ def main():
             except:
                 print("Coordenada inválida")
             """
-            #movida = random.choice([movida for movida in tablero.legal_moves])
+            movida = random.choice([movida for movida in tablero.legal_moves])
             #movida = mejorMovimiento(tablero, 1)
-            #tablero.push(movida)
+            tablero.push(movida)
             #print("las blancas movieron", movida)
         else:
             #movida = random.choice([movida for movida in tablero.legal_moves])
             movida = mejorMovimiento(tablero, 7)
             tablero.push(movida)
             #print("las negras movieron", movida)
-    imprimeTablero(tablero)
+    #imprimeTablero(tablero)
     return tablero.result()
 
 

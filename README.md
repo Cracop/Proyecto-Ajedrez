@@ -809,7 +809,7 @@ function mejorMovimiento(profundidad)
 ```
 ### Paso 5: Programación de la IA
 Con base al pseudocódigo anterior, nos quedaron las siguientes funciones:
-#### NEGAMAX
+##### NEGAMAX
 ```
 def negamax(tablero, alfa, beta, profundidad):
     maxEval = -999999
@@ -824,7 +824,7 @@ def negamax(tablero, alfa, beta, profundidad):
             break
     return maxEval
 ```
-#### Mejor Movimiento
+##### Mejor Movimiento
 ```
 def mejorMovimiento(tablero, profundidad):
     mejorMovimiento = chess.Move.null() #Solo pasó el turno al otro jugador
@@ -841,7 +841,7 @@ def mejorMovimiento(tablero, profundidad):
         tablero.pop()
     return mejorMovimiento
 ```
-#### Función Principal
+##### Función Principal
 ```
 def main():
     tablero = chess.Board()
@@ -867,3 +867,26 @@ def main():
     #imprimeTablero(tablero)
     return tablero.result()
 ```
+#### Pruebas
+Para probar el desempeño de nuestra IA, se modificó el código de tal manera que ambos jugadores fueran la computadora, sin embargo las blancas jugaban movimientos aleatorios mientras que las negras utilizaban negamax a 7 niveles de profundidad.
+El código quedó de la siguiente manera:
+```
+def main():
+    tablero = chess.Board()
+    while not tablero.is_game_over():
+        imprimeTablero(tablero)
+        #print("")
+        if tablero.turn:
+            movida = random.choice([movida for movida in tablero.legal_moves])
+            tablero.push(movida)
+        else:
+            movida = mejorMovimiento(tablero, 7)
+            tablero.push(movida)
+    imprimeTablero(tablero)
+    return tablero.result()
+```
+##### Resultados
+De 100 juegos, los resultados fueron:
+- `0` juegos los ganaron las blancas.
+- `53` juegos los ganaron las negras.
+- `47` juegos fueron empates.
