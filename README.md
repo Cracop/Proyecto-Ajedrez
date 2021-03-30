@@ -771,7 +771,7 @@ En este caso llamamos a la función de la siguiente manera:
 minimax(estadoActual, 3, -infinito, +infinito, true)
 ```
 #### NEGAMAX
-Hay una manera de ahorrarnos lineas en la función, el procedimiento es casi el mismo, excepto que ahora vamos a trabajar mediante un supuesto `max(a,b) = -min(-a,-b)`. De esta manera solo hago un procesimiento: maximizar.
+Hay una manera de ahorrarnos lineas en la función, el procedimiento es casi el mismo, excepto que ahora vamos a trabajar mediante un supuesto `max(a,b) = -min(-a,-b)`. De esta manera solo hago un procedimiento: maximizar.
 ```
 function negamax(estado, alfa, beta, profundidad)
     maxEval = -infinito
