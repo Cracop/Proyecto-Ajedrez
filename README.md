@@ -789,3 +789,22 @@ Su llamada original sería:
 ```
 negamax(estadoActual, -infinito, +infinito, 3)
 ```
+#### Selección del movimiento
+Ahora que ya tenemos una forma de obtener el mayor puntaje, necesitamos una forma de que seleccione al movimiento que nos de ese puntaje y nos regrese ese movimiento óptimo. Para eso utilizamos nuestra funcion de negamax. Con eso, el pseudocódigo quedaría así:
+```
+function mejorMovimiento(profundidad)
+    mejorMovimiento = null
+    maxEval = -999999
+    alfa = -999999
+    beta = 999999
+    for movimiento en movimientosLegales
+        hacer movimiento
+        eval = -negamax(-beta, -alfa, profundidad -1)
+        if eval > maxEval
+            maxEval = eval
+            mejorMovimiento = movimiento
+        alfa = max(eval, alfa)
+        saco el movimiento
+    return mejorMovimiento
+```
+### Paso 5: Programación de la IA
