@@ -596,7 +596,7 @@ kingstable = [
 -30,-40,-40,-50,-50,-40,-40,-30,
 -30,-40,-40,-50,-50,-40,-40,-30]
 ```
-#### Función de evaluación de PeSTO
+#### Función de evaluación de PeSTO (Lo puedo pasar a mejoras)
 Es una heurística desarrollada por [Ronald Friederich](https://www.chessprogramming.org/Ronald_Friederich), la cual no solo toma en cuenta el valor de las piezas y sus posiciones, sino que también que tan avanzado está el juego. Con esto se tienen diferentes tablas de posiciones para las piezas dependiendo si se está en el juego inicial, intermedio o final. 
 Para esto se tiene que tener una manera de definir en que fase se está, para eso se utiliza una especie de "puntaje de fase":
 - `FaseInicial = 5900`
@@ -704,5 +704,34 @@ def evaluar(tablero):
         else:
             return -valorEval
 
-
 ```
+
+### Paso 4: Algoritmo de Juego
+Lo que queremos es una manera de que la computadora tome las decisiones adecuadas para ganarle al jugador humano. Para esto utilizamos el algoritmo MINIMAX, lo que nos permite ver hacia adelante y hacer la mejor movida.
+#### MINIMAX 
+Este algoritmo funciona de acuerdo a la suposición que lo que es mejor para mí es peor para mi oponente, es un juego de suma cero. Por lo que se divide en dos, un jugador que maximiza y un jugador que quiere minimizar. Se asume siempre que mi oponente solo hace buenas jugadas. 
+El pseudocódigo de está función es este:
+```
+function minimax(estado, profundidad, maximizar)
+    if profundidad == 0 or game over in estado
+        return evaluacion del estado
+    
+    if maximizar
+        maxEval = -infinito
+        for each hijo de estado
+            eval = minimax(hijo, profundidad -1, false)
+            maxEval = max(maxEval, eval)
+        return maxEval
+
+    else
+        minEval = +infinito
+        for each hijo de estado
+            eval = minimax(hijo, profundidad - 1, true)
+            minEval = min(minEval, eval)
+        return minEval
+```
+Con esto la computadora ya podría elegir movimientos que son relativamente buenos, sin embargo no resulta práctico, por algo que se llama el [Número de Shannon](https://en.wikipedia.org/wiki/Shannon_number), el cual me da una estimación del número de jugadas posibles que puede tener una partida de ajedrez a lo largo un promedio de 40 turnos. Ese número es 10<sup>120</sup>, para tener una comparación el npumero de átomos en el universo es aproximadamente 10<sup>80</sup>. 
+
+#### Alfa Beta Prunning
+
+#### NEGAMAX
