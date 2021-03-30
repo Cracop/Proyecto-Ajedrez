@@ -120,7 +120,7 @@ def evaluar(tablero):
         reinaN = len(tablero.pieces(chess.QUEEN, chess.BLACK))
     
         valorMaterial = 100 * (peonB - peonN) + 320 * (caballoB - caballoN) + 330 * (alfilB - alfilN) + 500 * (torreB - torreN) + 900 * (reinaB - reinaN)
-    
+        
         peonPos = sum([pawntable[i] for i in tablero.pieces(chess.PAWN, chess.WHITE)]) + sum([-pawntable[chess.square_mirror(i)] for i in tablero.pieces(chess.PAWN, chess.BLACK)])
         caballoPos = sum([knightstable[i] for i in tablero.pieces(chess.KNIGHT, chess.WHITE)]) + sum([-knightstable[chess.square_mirror(i)] for i in tablero.pieces(chess.KNIGHT, chess.BLACK)])
         alfilPos = sum([bishopstable[i] for i in tablero.pieces(chess.BISHOP, chess.WHITE)]) + sum([-bishopstable[chess.square_mirror(i)] for i in tablero.pieces(chess.BISHOP, chess.BLACK)])
@@ -141,7 +141,7 @@ def main():
     while not tablero.is_game_over():
         #imprimeTablero(tablero)
         #print(tablero.turn)
-        print(evaluar(tablero))
+        evaluar(tablero)
         if tablero.turn:
             """
             ins = input("Da la movida que quieras hacer con el formato a1a2\n")

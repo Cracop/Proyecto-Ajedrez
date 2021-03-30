@@ -730,8 +730,62 @@ function minimax(estado, profundidad, maximizar)
             minEval = min(minEval, eval)
         return minEval
 ```
+Llamamos a la función de la siguiente manera:
+```
+minimax(estadoActual, 3, true)
+```
 Con esto la computadora ya podría elegir movimientos que son relativamente buenos, sin embargo no resulta práctico, por algo que se llama el [Número de Shannon](https://en.wikipedia.org/wiki/Shannon_number), el cual me da una estimación del número de jugadas posibles que puede tener una partida de ajedrez a lo largo un promedio de 40 turnos. Ese número es 10<sup>120</sup>, para tener una comparación el npumero de átomos en el universo es aproximadamente 10<sup>80</sup>. 
 
 #### Alfa Beta Prunning
+Para resolver este problema lo que vamos a hacer es encontrar una forma de no tener que calcular todos movimientos posibiles, La manera en la que hacemos esto guardando las cotas que se tienen, de tal forma que no revisemos ramas que no tienen futuro alguno. Se utilizan alfa y beta, dos parametros que me indican lo mejor que el otro jugador puede conseguir. 
+- alfa es el peor puntaje para el jugador que maximiza
+- beta es el peor puntaje para el jugador que minimiza
+No se trata de sustituir al MINIMAX, solo de hacerlo más rápido, por lo tanto el pseudocódigo quedaría así:
+```
+function minimax(estado, profundidad, alfa, beta, maximizar)
+    if profundidad == 0 or game over in estado
+        return evaluacion del estado
+    
+    if maximizar
+        maxEval = -infinito
+        for each hijo de estado
+            eval = minimax(hijo, profundidad -1, alfa, beta, false)
+            maxEval = max(maxEval, eval)
+            alfa = max(alfa, eval)
+            if beta <= alfa
+                break
+        return maxEval
 
+    else
+        minEval = +infinito
+        for each hijo de estado
+            eval = minimax(hijo, profundidad - 1, alfa, beta,true)
+            minEval = min(minEval, eval)
+            beta = min(beta, eval)
+            if beta <= alpha
+                break
+        return minEval
+```
+En este caso llamamos a la función de la siguiente manera:
+```
+minimax(estadoActual, 3, -infinito, +infinito, true)
+```
 #### NEGAMAX
+Hay una manera de ahorrarnos lineas en la función, el procedimiento es casi el mismo, excepto que ahora vamos a trabajar mediante un supuesto `max(a,b) = -min(-a,-b)`. De esta manera solo hago un procesimiento: maximizar.
+```
+function negamax(estado, alfa, beta, profundidad)
+    maxEval = -infinito
+    if profundidad == 0 or game over en estado
+        return evaluación del estado
+    for each hijo de estado
+        eval = -negamax(hijo, -beta, -alfa, profundidad -1)
+        maxEval = max(maxEval, eval)
+        alfa = max(alfa, eval)
+        if alfa >= beta
+            break
+    return maxEval
+```
+Su llamada original sería:
+```
+negamax(estadoActual, -infinito, +infinito, 3)
+```
