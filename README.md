@@ -584,7 +584,7 @@ queenstable = [
 -20,-10,-10, -5, -5,-10,-10,-20]
 ```
 ##### Rey
-En el juego inicial e intermedio el Rey se debería quedar detrás de los peones, pero la situación es diferente para el juego final. 
+Al inicio el Rey se debería quedar detrás de los peones. La situación cambia conforme avanza el juego.
 ```
 kingstable = [
  20, 30, 10,  0,  0, 10, 30, 20,
@@ -596,11 +596,6 @@ kingstable = [
 -30,-40,-40,-50,-50,-40,-40,-30,
 -30,-40,-40,-50,-50,-40,-40,-30]
 ```
-#### Función de evaluación de PeSTO (Lo puedo pasar a mejoras)
-Es una heurística desarrollada por [Ronald Friederich](https://www.chessprogramming.org/Ronald_Friederich), la cual no solo toma en cuenta el valor de las piezas y sus posiciones, sino que también que tan avanzado está el juego. Con esto se tienen diferentes tablas de posiciones para las piezas dependiendo si se está en el juego inicial, intermedio o final. 
-Para esto se tiene que tener una manera de definir en que fase se está, para eso se utiliza una especie de "puntaje de fase":
-- `FaseInicial = 5900`
-- `FaseIntermedia = 500`
 
 OK, esta sigo sin entender como cálcula el phase score, pero lo checamos luego
 
@@ -890,3 +885,18 @@ De 100 juegos, los resultados fueron:
 - `0` juegos los ganaron las blancas.
 - `53` juegos los ganaron las negras.
 - `47` juegos fueron empates.
+
+### Paso 6: Mejoras
+Si bien ya tenemos una IA aceptable en el juego, hay modificaciones que se pueden hacer para mejorar su rendimiento:
+#### Nuevas Funciones Heurísticas
+Si bien las evaluaciones que utilizamos son efectivas, son estáticas y las utilizamos para todo el juego. La principal víctima de esto es la evaluación de piezas por posición. Con ella asumimos que las posiciones de las piezas son deseables durante todo el juego, cuando las posiciones ideales cambian dependiendo de la fase del juego. 
+##### Función de evaluación de PeSTO (Lo puedo pasar a mejoras)
+Es una heurística desarrollada por [Ronald Friederich](https://www.chessprogramming.org/Ronald_Friederich), la cual no solo toma en cuenta el valor de las piezas y sus posiciones, sino que también que tan avanzado está el juego. Con esto se tienen diferentes tablas de posiciones para las piezas dependiendo si se está en el juego inicial, intermedio o final. 
+Para esto se tiene que tener una manera de definir en que fase se está, por lo que se utiliza una especie de "puntaje de fase"
+
+#### Movidas iniciales
+Por el momento, las jugadas iniciales que hace la computadora siempre son las mismas, exactamente `g8f6` y`b8c6`, por lo que no es un jugador muy creativo que digamos. Lo que podríamos hacer es darle un libro de movidas iniciales (la librería me lo permite) para que tenga más opciones y comience las partidas de diferente manera.
+
+#### 
+
+####

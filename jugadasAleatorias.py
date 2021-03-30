@@ -62,8 +62,6 @@ kingstable = [
 -30,-40,-40,-50,-50,-40,-40,-30,
 -30,-40,-40,-50,-50,-40,-40,-30]
 
-
-
 def imprimeTablero(tablero):
     texto=""
     texto += "8|"
@@ -166,7 +164,6 @@ def mejorMovimiento(tablero, profundidad):
 def main():
     tablero = chess.Board()
     while not tablero.is_game_over():
-    #for i in range(16):
         #imprimeTablero(tablero)
         #print(tablero.turn)
         if tablero.turn:
@@ -189,17 +186,17 @@ def main():
         else:
             #movida = random.choice([movida for movida in tablero.legal_moves])
             movida = mejorMovimiento(tablero, 7)
+            print(movida)
             tablero.push(movida)
             #print("las negras movieron", movida)
     #imprimeTablero(tablero)
     return tablero.result()
 
-
 if __name__ == "__main__":
     empates = 0 #1/2-1/2
     blancas = 0 #1-0
     negras = 0  #0-1
-    for i in range(100):
+    for i in range(1):
         resultado = main()
         if resultado == "0-1":
             negras += 1
