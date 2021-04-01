@@ -164,6 +164,8 @@ print(movida)
 ```
 Lo cual nos daría `b1b4`
 
+Si quiero saber si el movimiento sería una captura, puedo utilizar `tablero.is_capture(movida)`, lo cual me regresa un booleano.
+
 ### Aplicación de Movimientos
 El tablero contiene una pila `tablero.move_stack` donde se almacenan todas las movidas, por lo que manipularlo con las siguientes funciones.
 - `tablero.push(movida)' para realizar un objeto `Move` que recibe como parametro como el creado anteriormente, automaticamente se cambia el turno.
@@ -881,6 +883,7 @@ def main():
     return tablero.result()
 ```
 ##### Resultados
+Se utilizó negamax bajando a 7 niveles de profundidad
 De 100 juegos, los resultados fueron:
 - `0` juegos los ganaron las blancas.
 - `53` juegos los ganaron las negras.
@@ -897,6 +900,72 @@ Para esto se tiene que tener una manera de definir en que fase se está, por lo 
 #### Movidas iniciales
 Por el momento, las jugadas iniciales que hace la computadora siempre son las mismas, exactamente `g8f6` y`b8c6`, por lo que no es un jugador muy creativo que digamos. Lo que podríamos hacer es darle un libro de movidas iniciales (la librería me lo permite) para que tenga más opciones y comience las partidas de diferente manera.
 
-#### 
+#### Resolver el [Efecto Horizonte](https://www.chessprogramming.org/Horizon_Effect)
+Esto se sucede debido a la limitación de la profundidad en los árboles de búsqueda.La principal manifestación de esto es cuando un resultado negativo parace que es evitable cuando en realidad solamente se puede posponer. Un ejemplo de esto es cuando en el movimiento 6 vemos que la Reina es capturada, de tal forma que se sacrificarán piezas para evitar eso. Lo que no nos damos cuenta es que en el movimiento 10 la Reina de todas formas será capturada, por lo que se hizó un sacrificio inútil. 
 
-####
+Para resolver este problema, se utiliza la [Quiescence Search](https://www.chessprogramming.org/Quiescence_Search), la cual se realiza una búsqueda limitada al final del programa. Su objetivo es evaluar posiciones "quietas" es decir aquellas donde no se pueden capturar piezas. 
+El pseudocódigo de la función es: 
+```
+int Quiesce( int alpha, int beta ) {
+    int stand_pat = Evaluate();
+    if( stand_pat >= beta )
+        return beta;
+    if( alpha < stand_pat )
+        alpha = stand_pat;
+
+    until( every_capture_has_been_examined )  {
+        MakeCapture();
+        score = -Quiesce( -beta, -alpha );
+        TakeBackMove();
+
+        if( score >= beta )
+            return beta;
+        if( score > alpha )
+           alpha = score;
+    }
+    return alpha;
+}
+```
+Necesitamos encontrar una manera de dejar de buscar sin necesariamente realizar todas las busquedas posibles. El stand_pat se trata de tener una cota inferior para el puntaje. Si stand_pat es mayor o igual a beta entonces podemos regresar beta como puntaje, de otra manera la búsqueda continúa. 
+Nuestro código quedaría de la siguiente manera:
+```
+def quiesce(tablero, alpha, beta):
+    stand_pat = evaluar(tablero)
+    if (stand_pat >= beta):
+        return beta
+
+    alfa=max(alfa, stand_pat)
+
+    for movida in tablero.legal_moves:
+        if tablero.is_capture(movida):
+            tablero.push(movida)
+            puntaje = -quiesce(tablero,-beta, -alfa)
+            board.pop()
+
+            if (puntaje >= beta):
+                return beta
+
+            alfa=max(alfa, puntaje)
+    return alpha
+```
+De igual manera tenemos que modificar nuestra función de negamax:
+```
+def negamax(tablero, alfa, beta, profundidad):
+    maxEval = -999999
+    if profundidad == 0:
+        return quiesce(tablero, alfa, beta)
+    for movida in tablero.legal_moves:
+        tablero.push(movida)
+        valorEval = -(negamax(tablero, -beta, -alfa, profundidad-1))
+        maxEval = max(maxEval, valorEval)
+        alfa = max(alfa, valorEval)
+        if alfa >= beta:
+            break
+    return maxEval
+```
+Corrimos en problemas con este método, la computadora ahora se tardaba más tiempo por jugada, lo máximo que se conto fueron 10 segundos entre que el humano daba una movida y la computadora respondía. Sin embargo necesitabamos comparar su desempeño con la versión anterior. Tuvimos que reducir el nivel de profundidad de 7 a 3, de otra forma se tarda demasiado tiempo. 
+Se volvieron a realizar pruebas, con las blancas jugando de manera aleatoria y las negras jugando con el nuevo algoritmo de negamax, los resultados fueron los siguientes:
+- `0` juegos los ganaron las blancas
+- `88` juegos los ganaron las negras
+- `12` juegos fueron empatados
+### Paso 7: Una Nueva IA Mejorada

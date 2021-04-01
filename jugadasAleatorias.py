@@ -1,6 +1,7 @@
 #Importo la librería
 import chess 
 import random
+import time
 
 pawntable = [
  0,  0,  0,  0,  0,  0,  0,  0,
@@ -118,7 +119,7 @@ def evaluar(tablero):
         reinaN = len(tablero.pieces(chess.QUEEN, chess.BLACK))
     
         valorMaterial = 100 * (peonB - peonN) + 320 * (caballoB - caballoN) + 330 * (alfilB - alfilN) + 500 * (torreB - torreN) + 900 * (reinaB - reinaN)
-        
+
         peonPos = sum([pawntable[i] for i in tablero.pieces(chess.PAWN, chess.WHITE)]) + sum([-pawntable[chess.square_mirror(i)] for i in tablero.pieces(chess.PAWN, chess.BLACK)])
         caballoPos = sum([knightstable[i] for i in tablero.pieces(chess.KNIGHT, chess.WHITE)]) + sum([-knightstable[chess.square_mirror(i)] for i in tablero.pieces(chess.KNIGHT, chess.BLACK)])
         alfilPos = sum([bishopstable[i] for i in tablero.pieces(chess.BISHOP, chess.WHITE)]) + sum([-bishopstable[chess.square_mirror(i)] for i in tablero.pieces(chess.BISHOP, chess.BLACK)])
@@ -133,19 +134,54 @@ def evaluar(tablero):
         else:
             return -valorEval
 
-def negamax(tablero, alfa, beta, profundidad):
+def negamax2(tablero, alfa, beta, profundidad):
     maxEval = -999999
     if profundidad == 0 or not tablero.is_game_over():
         return evaluar(tablero)
     for movida in tablero.legal_moves:
         tablero.push(movida)
         valorEval = -(negamax(tablero, -beta, -alfa, profundidad-1))
+        tablero.pop()
         maxEval = max(maxEval, valorEval)
         alfa = max(alfa, valorEval)
         if alfa >= beta:
             break
     return maxEval
-    
+
+def negamax(tablero, alfa, beta, profundidad):
+    maxEval = -999999
+    if profundidad == 0 or not tablero.is_game_over():
+        return quiesce(tablero, alfa, beta)
+    for movida in tablero.legal_moves:
+        tablero.push(movida)
+        valorEval = -(negamax(tablero, -beta, -alfa, profundidad-1))
+        tablero.pop()
+        maxEval = max(maxEval, valorEval)
+        alfa = max(alfa, valorEval)
+        if alfa >= beta:
+            break
+    return maxEval
+
+def quiesce(tablero, alfa, beta):
+    stand_pat = evaluar(tablero)
+    if (stand_pat >= beta):
+        return beta
+
+    alfa=max(alfa, stand_pat)
+
+    for movida in tablero.legal_moves:
+        if tablero.is_capture(movida):
+            tablero.push(movida)
+            puntaje = -quiesce(tablero,-beta, -alfa)
+            tablero.pop()
+
+            if (puntaje >= beta):
+                return beta
+
+            alfa=max(alfa, puntaje)
+    return alfa
+
+
 def mejorMovimiento(tablero, profundidad):
     mejorMovimiento = chess.Move.null() #Solo pasó el turno al otro jugador
     maxEval = -999999
@@ -161,11 +197,60 @@ def mejorMovimiento(tablero, profundidad):
         tablero.pop()
     return mejorMovimiento
 
+prueba = [ "b2b4",
+"g8f6",
+"e2e3",
+"b8c6",
+"e3e4",
+"f6e4",
+"a2a3",
+"c6b4",
+"d2d4",
+"b4c2",
+"d1c2",
+"e4f2",
+"f1d3",
+"f2h1",
+"g1e2",
+"h1g3",
+"c2d2",
+"g3e2",
+"h2h3",
+"e2c1",
+"d3c2",
+"c1d3",
+"e1e2",
+"e7e5",
+"c2b3",
+"e5d4",
+"h3h4",
+"f8a3",
+"b1c3",
+"d4c3",
+"e2d1",
+"c3d2",
+"g2g4",
+"d8h4",
+"b3d5",
+"h4g4",
+"d1d2",
+"e8g8",
+"d5f3",
+"g4f3",
+"a1c1",
+"a3c1",
+"d2c3",
+"d7d5",
+"c3d4",
+"c1d2"
+]
+
 def main():
     tablero = chess.Board()
+    #imprimeTablero(tablero)
     while not tablero.is_game_over():
-        #imprimeTablero(tablero)
         #print(tablero.turn)
+        #imprimeTablero(tablero)
         if tablero.turn:
             """
             ins = input("Da la movida que quieras hacer con el formato a1a2\n")
@@ -179,24 +264,89 @@ def main():
             except:
                 print("Coordenada inválida")
             """
+            #peonB = len(tablero.pieces(chess.PAWN, chess.WHITE))
+            #caballoB = len(tablero.pieces(chess.KNIGHT, chess.WHITE))
+            #alfilB = len(tablero.pieces(chess.BISHOP, chess.WHITE))
+            #torreB = len(tablero.pieces(chess.ROOK, chess.WHITE))
+            #reinaB = len(tablero.pieces(chess.QUEEN, chess.WHITE))
+            #print("Valor de las blancas", 100 * (peonB) + 320 * (caballoB) + 330 * (alfilB) + 500 * (torreB) + 900 * (reinaB))
+            #imprimeTablero(tablero)
+
+
             movida = random.choice([movida for movida in tablero.legal_moves])
             #movida = mejorMovimiento(tablero, 1)
+            #ins = prueba.pop(0)
+            #movida = chess.Move(chess.parse_square(ins[0:2]),chess.parse_square(ins[2:4]))
             tablero.push(movida)
+            
             #print("las blancas movieron", movida)
         else:
             #movida = random.choice([movida for movida in tablero.legal_moves])
-            movida = mejorMovimiento(tablero, 7)
-            print(movida)
+            movida = mejorMovimiento(tablero, 3)
+            #ins = prueba.pop(0)
+            #movida = chess.Move(chess.parse_square(ins[0:2]),chess.parse_square(ins[2:4]))
             tablero.push(movida)
+            #tablero.push(movida)
             #print("las negras movieron", movida)
+        #print(movida)
     #imprimeTablero(tablero)
     return tablero.result()
+
+prueba = [ "b2b4",
+"g8f6",
+"e2e3",
+"b8c6",
+"e3e4",
+"f6e4",
+"a2a3",
+"c6b4",
+"d2d4",
+"b4c2",
+"d1c2",
+"e4f2",
+"f1d3",
+"f2h1",
+"g1e2",
+"h1g3",
+"c2d2",
+"g3e2",
+"h2h3",
+"e2c1",
+"d3c2",
+"c1d3",
+"e1e2",
+"e7e5",
+"c2b3",
+"e5d4",
+"h3h4",
+"f8a3",
+"b1c3",
+"d4c3",
+"e2d1",
+"c3d2",
+"g2g4",
+"d8h4",
+"b3d5",
+"h4g4",
+"d1d2",
+"e8g8",
+"d5f3",
+"g4f3",
+"a1c1",
+"a3c1",
+"d2c3",
+"d7d5",
+"c3d4",
+"c1d2"
+]
+
 
 if __name__ == "__main__":
     empates = 0 #1/2-1/2
     blancas = 0 #1-0
     negras = 0  #0-1
-    for i in range(1):
+    start_time = time.time()
+    for i in range(100):
         resultado = main()
         if resultado == "0-1":
             negras += 1
@@ -204,6 +354,8 @@ if __name__ == "__main__":
             blancas += 1
         else: 
             empates += 1
+    print("--- %s seconds ---" % (time.time() - start_time))
+    #print(prueba)
     print("Las blancas ganaron:", blancas)
     print("Las negras ganaron:", negras)
     print("Empates", empates)
