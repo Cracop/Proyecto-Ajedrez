@@ -929,7 +929,7 @@ int Quiesce( int alpha, int beta ) {
 Necesitamos encontrar una manera de dejar de buscar sin necesariamente realizar todas las busquedas posibles. El stand_pat se trata de tener una cota inferior para el puntaje. Si stand_pat es mayor o igual a beta entonces podemos regresar beta como puntaje, de otra manera la búsqueda continúa. 
 Nuestro código quedaría de la siguiente manera:
 ```
-def quiesce(tablero, alpha, beta):
+def quiesce(tablero, alfa, beta):
     stand_pat = evaluar(tablero)
     if (stand_pat >= beta):
         return beta
@@ -940,23 +940,24 @@ def quiesce(tablero, alpha, beta):
         if tablero.is_capture(movida):
             tablero.push(movida)
             puntaje = -quiesce(tablero,-beta, -alfa)
-            board.pop()
+            tablero.pop()
 
             if (puntaje >= beta):
                 return beta
 
             alfa=max(alfa, puntaje)
-    return alpha
+    return alfa
 ```
 De igual manera tenemos que modificar nuestra función de negamax:
 ```
 def negamax(tablero, alfa, beta, profundidad):
     maxEval = -999999
-    if profundidad == 0:
+    if profundidad == 0 or not tablero.is_game_over():
         return quiesce(tablero, alfa, beta)
     for movida in tablero.legal_moves:
         tablero.push(movida)
         valorEval = -(negamax(tablero, -beta, -alfa, profundidad-1))
+        tablero.pop()
         maxEval = max(maxEval, valorEval)
         alfa = max(alfa, valorEval)
         if alfa >= beta:
