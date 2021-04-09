@@ -179,8 +179,24 @@ def quiesce(tablero, alfa, beta):
                 return beta
 
             alfa=max(alfa, puntaje)
+
     return alfa
 
+
+def mejorMovimiento2(tablero, profundidad):
+    mejorMovimiento = chess.Move.null() #Solo pasó el turno al otro jugador
+    maxEval = -999999
+    alfa = -999999
+    beta = 999999
+    for movimiento in tablero.legal_moves:
+        tablero.push(movimiento)
+        valorEval = -(negamax2(tablero, -beta, -alfa, profundidad-1))
+        if valorEval > maxEval:
+            maxEval = valorEval
+            mejorMovimiento = movimiento
+        alfa = max(valorEval, alfa)
+        tablero.pop()
+    return mejorMovimiento
 
 def mejorMovimiento(tablero, profundidad):
     mejorMovimiento = chess.Move.null() #Solo pasó el turno al otro jugador
@@ -197,53 +213,6 @@ def mejorMovimiento(tablero, profundidad):
         tablero.pop()
     return mejorMovimiento
 
-prueba = [ "b2b4",
-"g8f6",
-"e2e3",
-"b8c6",
-"e3e4",
-"f6e4",
-"a2a3",
-"c6b4",
-"d2d4",
-"b4c2",
-"d1c2",
-"e4f2",
-"f1d3",
-"f2h1",
-"g1e2",
-"h1g3",
-"c2d2",
-"g3e2",
-"h2h3",
-"e2c1",
-"d3c2",
-"c1d3",
-"e1e2",
-"e7e5",
-"c2b3",
-"e5d4",
-"h3h4",
-"f8a3",
-"b1c3",
-"d4c3",
-"e2d1",
-"c3d2",
-"g2g4",
-"d8h4",
-"b3d5",
-"h4g4",
-"d1d2",
-"e8g8",
-"d5f3",
-"g4f3",
-"a1c1",
-"a3c1",
-"d2c3",
-"d7d5",
-"c3d4",
-"c1d2"
-]
 
 def main():
     tablero = chess.Board()
@@ -273,7 +242,8 @@ def main():
             #imprimeTablero(tablero)
 
 
-            movida = random.choice([movida for movida in tablero.legal_moves])
+            #movida = random.choice([movida for movida in tablero.legal_moves])
+            movida = mejorMovimiento2(tablero, 7)
             #movida = mejorMovimiento(tablero, 1)
             #ins = prueba.pop(0)
             #movida = chess.Move(chess.parse_square(ins[0:2]),chess.parse_square(ins[2:4]))
@@ -281,8 +251,8 @@ def main():
             
             #print("las blancas movieron", movida)
         else:
-            #movida = random.choice([movida for movida in tablero.legal_moves])
-            movida = mejorMovimiento(tablero, 3)
+            movida = random.choice([movida for movida in tablero.legal_moves])
+            #movida = mejorMovimiento(tablero, 3)
             #ins = prueba.pop(0)
             #movida = chess.Move(chess.parse_square(ins[0:2]),chess.parse_square(ins[2:4]))
             tablero.push(movida)
@@ -292,53 +262,7 @@ def main():
     #imprimeTablero(tablero)
     return tablero.result()
 
-prueba = [ "b2b4",
-"g8f6",
-"e2e3",
-"b8c6",
-"e3e4",
-"f6e4",
-"a2a3",
-"c6b4",
-"d2d4",
-"b4c2",
-"d1c2",
-"e4f2",
-"f1d3",
-"f2h1",
-"g1e2",
-"h1g3",
-"c2d2",
-"g3e2",
-"h2h3",
-"e2c1",
-"d3c2",
-"c1d3",
-"e1e2",
-"e7e5",
-"c2b3",
-"e5d4",
-"h3h4",
-"f8a3",
-"b1c3",
-"d4c3",
-"e2d1",
-"c3d2",
-"g2g4",
-"d8h4",
-"b3d5",
-"h4g4",
-"d1d2",
-"e8g8",
-"d5f3",
-"g4f3",
-"a1c1",
-"a3c1",
-"d2c3",
-"d7d5",
-"c3d4",
-"c1d2"
-]
+
 
 
 if __name__ == "__main__":
