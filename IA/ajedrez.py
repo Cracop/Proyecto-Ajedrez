@@ -55,6 +55,17 @@ class Juego:
                     raise Exception
             except:
                 print("Jugada inválida")
+    
+    def darJugadaParam(self, casillaInicial, casillaFinal):
+        while True:
+            try:
+                movida = chess.Move(casillaInicial,casillaFinal)
+                if movida in self.tablero.legal_moves:
+                    return movida
+                else: 
+                    raise Exception
+            except:
+                print("Jugada inválida")
 
     def seleccionaMovimiento(self,nivel):
         if nivel == 0:
@@ -301,34 +312,28 @@ class Juego:
         #imprimetablero()
         return self.tablero.result()
 
-ai = Juego()
-print(ai.tablero)
-print(ai.jugar(1,0,True))
 
-
-"""
 if __name__ == "__main__":
-    #tablero = chess.Board() 
     empates = 0 #1/2-1/2
     blancas = 0 #1-0
     negras = 0  #0-1
-    start_time = time.time()    
+    inicio = time.time()    
     nivelCompu = 2
     nivelHumano = 0
-    jugadorHumano = True #True si juega como las blancas, False si juega como las negras    
-    for i in range(10):
-        self.tablero = chess.Board()
-        resultado = main(nivelCompu, nivelHumano, jugadorHumano)
-        print("Juego:",i)
+    jugadorHumano = True #True si juega como las blancas, False si juega como las negras 
+    for i in range(1):
+        ai = Juego()
+        #ai.tablero = chess.Board()
+        resultado = ai.jugar(nivelCompu,nivelHumano,True)
+        print("Juego:",i+1)
         if resultado == "0-1":
             negras += 1
         elif resultado == "1-0":
             blancas += 1
         else: 
             empates += 1
-    print("--- %s seconds ---" % (time.time() - start_time))
-    #print(prueba)
+    print("--- %s segundos ---" % (time.time() - inicio))
     print("Las blancas ganaron:", blancas)
     print("Las negras ganaron:", negras)
     print("Empates", empates)
-"""
+
