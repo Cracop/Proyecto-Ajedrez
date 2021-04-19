@@ -1,14 +1,21 @@
 import axios from 'axios';
-const URL = 'http://localhost:8000';
+const URL = 'http://localhost:8000/chess';
 
-export default class CustomersService{
+export default class Connection{
 
-    constructor(){}
+    constructor(){
+
+    }
 
 
-    getCustomers() {
+    getStart() {
         const url = `${URL}/`;
         return axios.get(url).then(response => response.data);
+    }
+
+    movimiento( move ) {
+        const url = `${URL}/${move}`
+        return axios.get(url).then(response => response.data)
     }
 
 }

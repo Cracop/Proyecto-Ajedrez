@@ -1,11 +1,11 @@
-import heuristicas as h
+from IA import heuristicas as h
 import chess
 import chess.polyglot
 import random
 import time
 
 
-class Juego:
+class Juego(object):
 
     def __init__(self):
         self.tablero = chess.Board()
@@ -44,18 +44,19 @@ class Juego:
         fila += "\n"
         return fila
 
-    def darJugada(self):
-        while True:
-            ins = input("Da la movida que quieras hacer con el formato a1a2\n")
-            try:
-                movida = chess.Move(chess.parse_square(
-                    ins[0:2]), chess.parse_square(ins[2:4]))
-                if movida in self.tablero.legal_moves:
-                    return movida
-                else:
-                    raise Exception
-            except:
-                print("Jugada inválida")
+    def darJugada(self, ins):
+        # while True:
+        #ins = input("Da la movida que quieras hacer con el formato a1a2\n")
+        try:
+            movida = chess.Move(chess.parse_square(
+                ins[0:2]), chess.parse_square(ins[2:4]))
+            if movida in self.tablero.legal_moves:
+                return movida
+            else:
+                raise Exception
+        except:
+            #print("Jugada inválida")
+            return "Jugada invalida"
 
     def darJugadaParam(self, casillaInicial, casillaFinal):
         while True:
@@ -157,41 +158,7 @@ class Juego:
                 maxEval = valorEval
                 mejorMovimiento = movimiento
             alfa = max(valorEval, alfa)
-
-            tablero.pop()
-    return mejorMovimiento
-
-
-"""Ejecución del programa"""
-
-
-def main(nivelCompu, nivelHumano, jugadorHumano):
-    imprimeTablero()
-    while not tablero.is_game_over():
-        if tablero.turn == jugadorHumano:  # Blancas
-            movida = seleccionaMovimiento(nivelHumano)
-        else:  # Negras
-            movida = seleccionaMovimiento(nivelCompu)
-        tablero.push(movida)
-        imprimeTablero()
-    # imprimeTablero()
-    return tablero.result()
-
-
-if __name__ == "__main__":
-    # tablero = chess.Board()
-    empates = 0  # 1/2-1/2
-    blancas = 0  # 1-0
-    negras = 0  # 0-1
-    start_time = time.time()
-    nivelCompu = 2
-    nivelHumano = -1
-    jugadorHumano = True  # True si juega como las blancas, False si juega como las negras
-    for i in range(1):
-        tablero = chess.Board()
-        resultado = main(nivelCompu, nivelHumano, jugadorHumano)
-        print("Juego:", i)
-        self.tablero.pop()
+            self.tablero.pop()
         return mejorMovimiento
     """Funciones que aplican para el nivel 2"""
 
@@ -376,31 +343,26 @@ if __name__ == "__main__":
         return self.tablero.result()
 
 
-if __name__ == "__main__":
-    empates = 0  # 1/2-1/2
-    blancas = 0  # 1-0
-    negras = 0  # 0-1
-    inicio = time.time()
-    nivelCompu = 2
-    nivelHumano = 0
-    jugadorHumano = True  # True si juega como las blancas, False si juega como las negras
-    for i in range(1):
-        ai = Juego()
-        # ai.tablero = chess.Board()
-        resultado = ai.jugar(nivelCompu, nivelHumano, True)
-        print("Juego:", i+1)
-    if resultado == "0-1":
-        negras += 1
-    elif resultado == "1-0":
-        blancas += 1
-    else:
-        empates += 1
-
-    print("--- %s seconds ---" % (time.time() - start_time))
-    # print(prueba)
-
-    print("--- %s segundos ---" % (time.time() - inicio))
-
-    print("Las blancas ganaron:", blancas)
-    print("Las negras ganaron:", negras)
-    print("Empates", empates)
+# if __name__ == "__main__":
+#     empates = 0  # 1/2-1/2
+#     blancas = 0  # 1-0
+#     negras = 0  # 0-1
+#     inicio = time.time()
+#     nivelCompu = 2
+#     nivelHumano = 0
+#     jugadorHumano = True  # True si juega como las blancas, False si juega como las negras
+#     for i in range(1):
+#         ai = Juego()
+#         #ai.tablero = chess.Board()
+#         resultado = ai.jugar(nivelCompu, nivelHumano, True)
+#         print("Juego:", i+1)
+#         if resultado == "0-1":
+#             negras += 1
+#         elif resultado == "1-0":
+#             blancas += 1
+#         else:
+#             empates += 1
+#     print("--- %s segundos ---" % (time.time() - inicio))
+#     print("Las blancas ganaron:", blancas)
+#     print("Las negras ganaron:", negras)
+#     print("Empates", empates)

@@ -1,8 +1,11 @@
 import { Component, useRef } from "react"
 import Tile from "./Tile"
 import Chess from "./Chess"
+import Conection from "../Conection"
 
 import './styles/ChessBoard.css'
+
+const conection = new Conection()
 
 const verticalAxis = [1, 2, 3, 4, 5, 6, 7, 8]
 const horizontalAxis = ["a", "b", "c", "d", "e", "f", "g", "h"]
@@ -108,6 +111,8 @@ class ChessBoard extends Component{
         clientWidth: 0,
         clientHeight: 0,
         activePiece: null,
+        to_x: -1,
+        to_y: -1,
     }
     constructor(){
         super()
@@ -171,6 +176,9 @@ class ChessBoard extends Component{
             clientWidth: document.getElementById('chessboard').clientWidth,
             clientHeight: document.getElementById('chessboard').clientHeight,
         })
+        conection.getStart().then((result) => {
+            console.log(result);
+        })
     }
 
     activePiece = null
@@ -226,9 +234,20 @@ class ChessBoard extends Component{
     }
 
     dropPiece = (e) => {
+        var x = -1, y = -1
         if(this.activePiece){
-            const x = Math.floor((e.clientX - this.state.offsetLeft) / 60)
-            const y = Math.abs(Math.ceil((e.clientY - this.state.offsetTop - 480) / 60))                        
+            x = Math.floor((e.clientX - this.state.offsetLeft) / 60)
+            y = Math.abs(Math.ceil((e.clientY - this.state.offsetTop - 480) / 60))   
+            
+            var from_X = horizontalAxis[this.state.gridX]
+            var from_Y = verticalAxis[this.state.gridY]
+            var to_X = horizontalAxis[x]
+            var to_Y = verticalAxis[y]
+            var toSent = "" + from_X + "" + from_Y + "" + to_X + "" + to_Y
+            console.log(toSent);
+            conection.movimiento(toSent).then((result) => {
+                console.log(result);
+            })
             
             this.state.pieces.map((p) =>{
                     if(p.x === this.state.gridX && p.y === this.state.gridY){
@@ -243,10 +262,14 @@ class ChessBoard extends Component{
             
             this.activePiece = null
         }
+        
         this.ponerTablero()
         this.forceUpdate()
     }
 
+    componentDidUpdate = (e) => {
+
+    }
  
     render(){
         
