@@ -58,16 +58,16 @@ class Juego(object):
             #print("Jugada inválida")
             return "Jugada invalida"
 
-    def darJugadaParam(self, casillaInicial, casillaFinal):
-        while True:
-            try:
-                movida = chess.Move(casillaInicial, casillaFinal)
-                if movida in self.tablero.legal_moves:
-                    return movida
-                else:
-                    raise Exception
-            except:
-                print("Jugada inválida")
+    def darJugadaParam(self, move):
+        try:
+            movida = chess.Move(chess.parse_square(
+                move[0:2]), chess.parse_square(move[2:4]))
+            if movida in self.tablero.legal_moves:
+                return movida
+            else:
+                raise Exception
+        except:
+            return "Jugada inválida"
 
     def seleccionaMovimiento(self, nivel):
         if nivel == 0:
@@ -75,7 +75,7 @@ class Juego(object):
         elif nivel == 1:
             return self.mejorMovimiento1(3)
         elif nivel == -1:
-            return self.darJugada()
+            return self.darJugadaParam()
         else:
             return self.mejorMovimiento2(3)
 
@@ -311,7 +311,7 @@ class Juego(object):
     def mejorMovimiento2(self, profundidad):
         try:
             movida = chess.polyglot.MemoryMappedReader(
-                "Perfect2017-LC0.bin").weighted_choice(self.tablero).move
+                "the-generated-opening-book.bin").weighted_choice(self.tablero).move
             return movida
 
         except:

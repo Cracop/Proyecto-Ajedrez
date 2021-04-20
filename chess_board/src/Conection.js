@@ -3,9 +3,7 @@ const URL = 'http://localhost:8000/chess';
 
 export default class Connection{
 
-    constructor(){
-
-    }
+    constructor(){}
 
 
     getStart() {

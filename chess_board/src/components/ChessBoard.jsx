@@ -1,4 +1,4 @@
-import { Component, useRef } from "react"
+import { Component } from "react"
 import Tile from "./Tile"
 import Chess from "./Chess"
 import Conection from "../Conection"
@@ -9,11 +9,29 @@ const conection = new Conection()
 
 const verticalAxis = [1, 2, 3, 4, 5, 6, 7, 8]
 const horizontalAxis = ["a", "b", "c", "d", "e", "f", "g", "h"]
-
-const TeamType = {
-    BLACK: 'BLACK',
-    WHITE: 'WHITE'
+const conversion = {
+    "a": 0,
+    "b": 1,
+    "c": 2,
+    "d": 3,
+    "e": 4,
+    "f": 5,
+    "g": 6,
+    "h": 7,
+    "1": 0,
+    "2": 1,
+    "3": 2,
+    "4": 3,
+    "5": 4,
+    "6": 5,
+    "7": 6,
+    "8": 7,
 }
+
+// const TeamType = {
+//     BLACK: 'BLACK',
+//     WHITE: 'WHITE'
+// }
 
 const PieceType = {
     PAWN: 'PAWN',
@@ -104,8 +122,10 @@ class ChessBoard extends Component{
     board = []
     state = {
         pieces: initialBoardState,
-        girdX: 0,
+        gridX: 0,
         gridY: 0,
+        originalX: 0,
+        originalY: 0,
         offsetLeft: 0,
         offsetTop: 0,
         clientWidth: 0,
@@ -193,6 +213,8 @@ class ChessBoard extends Component{
                 ...this.state,
                 gridX: gridX,
                 gridY: gridY,
+                originalX: gridX,
+                originalY: gridY,
             })
             const x = e.clientX - 30
             const y = e.clientY -30
@@ -211,7 +233,8 @@ class ChessBoard extends Component{
             const maxY = this.state.offsetTop + this.state.clientHeight - 45
             const x = e.clientX - 30
             const y = e.clientY - 30
-            this.activePiece.style.position = "absolute" 
+            //console.log(this.activePiece.style);
+            this.activePiece.style.position = "absolute"
            
 
             if(x < minX){
@@ -247,28 +270,99 @@ class ChessBoard extends Component{
             console.log(toSent);
             conection.movimiento(toSent).then((result) => {
                 console.log(result);
+                if(result.isValid){
+                    const PC_move_x = conversion[result.move[2]]
+                    const PC_move_y = conversion[result.move[3]] 
+                    
+                    var newPieces = []
+                   
+                   
+                    this.state.pieces.map((p) =>{
+                        if(p.x === this.state.gridX && p.y === this.state.gridY){
+                            
+                            p.x = x
+                            p.y = y
+                        }
+                        return p
+                    })
+                    this.ponerTablero()
+                    this.forceUpdate()
+
+                    const sleep = (milliseconds) => {
+                        const date = Date.now();
+                        let currentDate = null;
+                        do {
+                          currentDate = Date.now();
+                        } while (currentDate - date < milliseconds);
+                    }
+
+                    sleep(1000)  
+                    this.state.pieces.map((p) =>{
+                        if(p.x === PC_move_x && p.y === PC_move_y){
+                            console.log("ADIOS");
+                            console.log(p);                           
+                        } else {
+                            console.log("HOLA"); 
+                            //console.log(p);
+                            newPieces.push(p)
+                        }
+                    })
+                    this.setState({
+                        ...this.state,
+                        pieces: newPieces,
+                    })
+                    this.ponerTablero()
+                    this.forceUpdate()
+                    this.state.pieces.map((p) => {
+                        if(p.x === conversion[result.move[0]] && p.y === conversion[result.move[1]]){
+                            p.x = PC_move_x
+                            p.y = PC_move_y
+                        }
+                        return p
+                    })
+                    
+                    console.log(x, y);
+                }else {
+                    console.log("falso");
+                    this.state.pieces.map((p) =>{
+                        if(p.x === this.state.gridX && p.y === this.state.gridY){
+                            
+
+                            p.x = x
+                            p.y = y
+                            console.log(p);
+                            console.log(this.state);
+                        }
+                        return p
+                    })
+                    this.ponerTablero()
+                    this.forceUpdate()
+                    this.state.pieces.map((p) =>{
+                        if(p.x === x && p.y === y){
+                            
+
+                            p.x = this.state.originalX
+                            p.y = this.state.originalY
+                            console.log(p);
+                        }
+                        return p
+                    })
+                    this.ponerTablero()
+                    this.forceUpdate()
+                    //console.log(this.state);
+                    alert("Moimiento Inválido")
+                    
+                }
+                
+                this.ponerTablero()
+                this.forceUpdate()
             })
             
-            this.state.pieces.map((p) =>{
-                    if(p.x === this.state.gridX && p.y === this.state.gridY){
-                        
-                        p.x = x
-                        p.y = y
-                    
-                    }
-                    return p
-            })
-            console.log(x, y);
             
             this.activePiece = null
         }
         
-        this.ponerTablero()
-        this.forceUpdate()
-    }
-
-    componentDidUpdate = (e) => {
-
+        
     }
  
     render(){
