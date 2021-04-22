@@ -9,6 +9,7 @@ class Juego:
 
     def __init__(self):
         self.tablero = chess.Board()
+        self.tablero.castling_rights=False
 
 
     """Funciones que aplican para todos los niveles"""
@@ -77,12 +78,26 @@ class Juego:
         else:
             return self.mejorMovimiento2(3)
 
+    def obtenPiezas(self):
+        piezas = dict()
+        piezas["peonB"] = len(self.tablero.pieces(chess.PAWN, chess.WHITE))
+        piezas["peonN"] = len(self.tablero.pieces(chess.PAWN, chess.BLACK))
+        piezas["caballoB"] = len(self.tablero.pieces(chess.KNIGHT, chess.WHITE))
+        piezas["caballoN"] = len(self.tablero.pieces(chess.KNIGHT, chess.BLACK))
+        piezas["alfilB"] = len(self.tablero.pieces(chess.BISHOP, chess.WHITE))
+        piezas["alfilN"] = len(self.tablero.pieces(chess.BISHOP, chess.BLACK))
+        piezas["torreB"] = len(self.tablero.pieces(chess.ROOK, chess.WHITE))
+        piezas["torreN"] = len(self.tablero.pieces(chess.ROOK, chess.BLACK))
+        piezas["reinaB"] = len(self.tablero.pieces(chess.QUEEN, chess.WHITE))
+        piezas["reinaN"] = len(self.tablero.pieces(chess.QUEEN, chess.BLACK))
+        return piezas
+
     """Funciones que aplican para el nivel 0"""
     def mejorMovimiento0(self):
         return  random.choice([movida for movida in self.tablero.legal_moves])
 
     """Funciones que aplican para el nivel 1"""
-    def evaluar1(self):
+    def evaluar1(self, numPiezas):
         if self.tablero.is_checkmate():
             if self.tablero.turn:
                 return -9999
@@ -93,18 +108,12 @@ class Juego:
         elif self.tablero.is_insufficient_material():
             return 0
         else:
-            peonB = len(self.tablero.pieces(chess.PAWN, chess.WHITE))
-            peonN = len(self.tablero.pieces(chess.PAWN, chess.BLACK))
-            caballoB = len(self.tablero.pieces(chess.KNIGHT, chess.WHITE))
-            caballoN = len(self.tablero.pieces(chess.KNIGHT, chess.BLACK))
-            alfilB = len(self.tablero.pieces(chess.BISHOP, chess.WHITE))
-            alfilN = len(self.tablero.pieces(chess.BISHOP, chess.BLACK))
-            torreB = len(self.tablero.pieces(chess.ROOK, chess.WHITE))
-            torreN = len(self.tablero.pieces(chess.ROOK, chess.BLACK))
-            reinaB = len(self.tablero.pieces(chess.QUEEN, chess.WHITE))
-            reinaN = len(self.tablero.pieces(chess.QUEEN, chess.BLACK))
-        
-            valorMaterial = 100 * (peonB - peonN) + 320 * (caballoB - caballoN) + 330 * (alfilB - alfilN) + 500 * (torreB - torreN) + 900 * (reinaB - reinaN)
+
+            valorMaterial = 100 * (numPiezas["peonB"] - numPiezas["peonN"]) 
+            + 320 * (numPiezas["caballoB"] - numPiezas["caballoN"]) 
+            + 330 * (numPiezas["alfilB"] - numPiezas["alfilN"]) 
+            + 500 * (numPiezas["torreB"] - numPiezas["torreN"]) 
+            + 900 * (numPiezas["reinaB"] - numPiezas["reinaN"]) 
 
             peonPos = sum([h.pawntable[i] for i in self.tablero.pieces(chess.PAWN, chess.WHITE)]) + sum([-h.pawntable[chess.square_mirror(i)] for i in self.tablero.pieces(chess.PAWN, chess.BLACK)])
             caballoPos = sum([h.knightstable[i] for i in self.tablero.pieces(chess.KNIGHT, chess.WHITE)]) + sum([-h.knightstable[chess.square_mirror(i)] for i in self.tablero.pieces(chess.KNIGHT, chess.BLACK)])
@@ -123,7 +132,8 @@ class Juego:
     def negamax1(self,alfa, beta, profundidad):
         maxEval = -999999
         if profundidad == 0:
-            return self.evaluar1()
+            numPiezas = self.obtenPiezas()
+            return self.evaluar1(numPiezas)
         for movida in self.tablero.legal_moves:
             self.tablero.push(movida)
             valorEval = -(self.negamax1(-beta, -alfa, profundidad-1))
@@ -160,22 +170,17 @@ class Juego:
         elif self.tablero.is_insufficient_material():
             return 0
         else:
-            fase = self.calculaFase()
-            return ((self.valorMid() * (256 - fase)) + (self.valorEnd() * fase)) / 256;
+            numPiezas = self.obtenPiezas()
+            fase = self.calculaFase(numPiezas)
+            return ((self.valorMid(numPiezas) * (256 - fase)) + (self.valorEnd(numPiezas) * fase)) / 256;
 
-    def valorMid(self): #Uso diferentes valores materiales y de tablas
-        peonB = len(self.tablero.pieces(chess.PAWN, chess.WHITE))
-        peonN = len(self.tablero.pieces(chess.PAWN, chess.BLACK))
-        caballoB = len(self.tablero.pieces(chess.KNIGHT, chess.WHITE))
-        caballoN = len(self.tablero.pieces(chess.KNIGHT, chess.BLACK))
-        alfilB = len(self.tablero.pieces(chess.BISHOP, chess.WHITE))
-        alfilN = len(self.tablero.pieces(chess.BISHOP, chess.BLACK))
-        torreB = len(self.tablero.pieces(chess.ROOK, chess.WHITE))
-        torreN = len(self.tablero.pieces(chess.ROOK, chess.BLACK))
-        reinaB = len(self.tablero.pieces(chess.QUEEN, chess.WHITE))
-        reinaN = len(self.tablero.pieces(chess.QUEEN, chess.BLACK))
+    def valorMid(self,numPiezas): #Uso diferentes valores materiales y de tablas
 
-        valorMaterial = 82 * (peonB - peonN) + 337 * (caballoB - caballoN) + 365 * (alfilB - alfilN) + 477 * (torreB - torreN) + 1025 * (reinaB - reinaN)
+        valorMaterial = 82 * (numPiezas["peonB"] - numPiezas["peonN"]) 
+        + 337 * (numPiezas["caballoB"] - numPiezas["caballoN"]) 
+        + 365 * (numPiezas["alfilB"] - numPiezas["alfilN"]) 
+        + 477 * (numPiezas["torreB"] - numPiezas["torreN"]) 
+        + 1025 * (numPiezas["reinaB"] - numPiezas["reinaN"]) 
 
         peonPos = sum([h.mg_pawn_table[chess.square_mirror(i)] for i in self.tablero.pieces(chess.PAWN, chess.WHITE)]) + sum([-h.mg_pawn_table[i] for i in self.tablero.pieces(chess.PAWN, chess.BLACK)])
         caballoPos = sum([h.mg_knight_table[chess.square_mirror(i)] for i in self.tablero.pieces(chess.KNIGHT, chess.WHITE)]) + sum([-h.mg_knight_table[i] for i in self.tablero.pieces(chess.KNIGHT, chess.BLACK)])
@@ -192,19 +197,12 @@ class Juego:
             return -valorEval
 
 
-    def valorEnd(self): #Uso diferentes valores materiales y de tablas
-        peonB = len(self.tablero.pieces(chess.PAWN, chess.WHITE))
-        peonN = len(self.tablero.pieces(chess.PAWN, chess.BLACK))
-        caballoB = len(self.tablero.pieces(chess.KNIGHT, chess.WHITE))
-        caballoN = len(self.tablero.pieces(chess.KNIGHT, chess.BLACK))
-        alfilB = len(self.tablero.pieces(chess.BISHOP, chess.WHITE))
-        alfilN = len(self.tablero.pieces(chess.BISHOP, chess.BLACK))
-        torreB = len(self.tablero.pieces(chess.ROOK, chess.WHITE))
-        torreN = len(self.tablero.pieces(chess.ROOK, chess.BLACK))
-        reinaB = len(self.tablero.pieces(chess.QUEEN, chess.WHITE))
-        reinaN = len(self.tablero.pieces(chess.QUEEN, chess.BLACK))
-        
-        valorMaterial = 94 * (peonB - peonN) + 281 * (caballoB - caballoN) + 297 * (alfilB - alfilN) + 512 * (torreB - torreN) + 936 * (reinaB - reinaN) 
+    def valorEnd(self, numPiezas): #Uso diferentes valores materiales y de tablas
+        valorMaterial = 94 * (numPiezas["peonB"] - numPiezas["peonN"]) 
+        + 281 * (numPiezas["caballoB"] - numPiezas["caballoN"]) 
+        + 297 * (numPiezas["alfilB"] - numPiezas["alfilN"]) 
+        + 512 * (numPiezas["torreB"] - numPiezas["torreN"]) 
+        + 936 * (numPiezas["reinaB"] - numPiezas["reinaN"]) 
         
         peonPos = sum([h.eg_pawn_table[chess.square_mirror(i)] for i in self.tablero.pieces(chess.PAWN, chess.WHITE)]) + sum([-h.eg_pawn_table[i] for i in self.tablero.pieces(chess.PAWN, chess.BLACK)])
         caballoPos = sum([h.eg_knight_table[chess.square_mirror(i)] for i in self.tablero.pieces(chess.KNIGHT, chess.WHITE)]) + sum([-h.eg_knight_table[i] for i in self.tablero.pieces(chess.KNIGHT, chess.BLACK)])
@@ -220,9 +218,7 @@ class Juego:
         else:
             return -valorEval
         
-
-
-    def calculaFase(self):
+    def calculaFase(self, numPiezas):
         fasePeon = 0
         faseCaballo = 1
         faseAlfil = 1
@@ -231,16 +227,16 @@ class Juego:
         faseTotal = fasePeon*16 + faseCaballo*4 + faseAlfil*4 + faseTorre*4 + faseReina*2
         fase = faseTotal
 
-        fase -= len(self.tablero.pieces(chess.PAWN, chess.WHITE)) * fasePeon
-        fase -= len(self.tablero.pieces(chess.PAWN, chess.BLACK)) * fasePeon
-        fase -= len(self.tablero.pieces(chess.KNIGHT, chess.WHITE)) * faseCaballo
-        fase -= len(self.tablero.pieces(chess.KNIGHT, chess.BLACK)) * faseCaballo
-        fase -= len(self.tablero.pieces(chess.BISHOP, chess.WHITE)) * faseAlfil
-        fase -= len(self.tablero.pieces(chess.BISHOP, chess.BLACK)) * faseAlfil
-        fase -= len(self.tablero.pieces(chess.ROOK, chess.WHITE)) * faseTorre
-        fase -= len(self.tablero.pieces(chess.ROOK, chess.BLACK)) * faseTorre
-        fase -= len(self.tablero.pieces(chess.QUEEN, chess.WHITE)) * faseReina
-        fase -= len(self.tablero.pieces(chess.QUEEN, chess.BLACK)) * faseReina
+        fase -= numPiezas["peonB"] * fasePeon
+        fase -= numPiezas["peonN"] * fasePeon
+        fase -= numPiezas["caballoB"] * faseCaballo
+        fase -= numPiezas["caballoN"] * faseCaballo
+        fase -= numPiezas["alfilB"]* faseAlfil
+        fase -= numPiezas["alfilN"] * faseAlfil
+        fase -= numPiezas["torreB"] * faseTorre
+        fase -= numPiezas["torreN"] * faseTorre
+        fase -= numPiezas["reinaB"] * faseReina
+        fase -= numPiezas["reinaN"] * faseReina
         
         fase = (fase * 256 + (faseTotal/2)) / faseTotal
         return fase
@@ -281,7 +277,7 @@ class Juego:
 
     def mejorMovimiento2(self,profundidad):
         try:
-            movida = chess.polyglot.MemoryMappedReader("Perfect2017-LC0.bin").weighted_choice(self.tablero).move
+            movida = chess.polyglot.MemoryMappedReader("Performance.bin").weighted_choice(self.tablero).move
             return movida
 
         except:
@@ -297,11 +293,12 @@ class Juego:
                     mejorMovimiento = movimiento
                 alfa = max(valorEval, alfa)
                 self.tablero.pop()
+                
         return mejorMovimiento
     """Ejecución del programa"""
 
     def jugar(self,nivelCompu, nivelHumano, jugadorHumano):
-        self.imprimetablero()
+        #self.imprimetablero()
         while not self.tablero.is_game_over():
             if self.tablero.turn == jugadorHumano: #Blancas
                 movida = self.seleccionaMovimiento(nivelHumano)
@@ -314,16 +311,17 @@ class Juego:
 
 
 if __name__ == "__main__":
-    empates = 0 #1/2-1/2
     blancas = 0 #1-0
+    empates = 0 #1/2-1/2
     negras = 0  #0-1
     inicio = time.time()    
-    nivelCompu = 2
+    nivelCompu = 1
     nivelHumano = 0
     jugadorHumano = True #True si juega como las blancas, False si juega como las negras 
     for i in range(1):
         ai = Juego()
         #ai.tablero = chess.Board()
+        #ai.tablero.ep_square=None
         resultado = ai.jugar(nivelCompu,nivelHumano,True)
         print("Juego:",i+1)
         if resultado == "0-1":
@@ -336,4 +334,3 @@ if __name__ == "__main__":
     print("Las blancas ganaron:", blancas)
     print("Las negras ganaron:", negras)
     print("Empates", empates)
-
