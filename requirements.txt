@@ -1,5 +1,5 @@
 django
 gunicorn
 django-heroku
-django-rest-framework
-django-corsheaders
+djangorestframework
+django-cors-headers
