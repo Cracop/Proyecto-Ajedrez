@@ -245,7 +245,7 @@ class Juego(object):
         faseAlfil = 1
         faseTorre = 2
         faseReina = 4
-        faseTotal = fasePeon*16 + faseCaballo*4 + \
+        faseTotal = fasePeon*16 + faseCaballo*4 +
             faseAlfil*4 + faseTorre*4 + faseReina*2
         fase = faseTotal
 
