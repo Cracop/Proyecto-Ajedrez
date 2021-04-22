@@ -6,3 +6,15 @@
   height: 480px;
   background-color: blue;
 }
+
+#dificultad {
+  height: 100vh;
+  display: grid;
+  place-content: center;
+}
+
+#dificultad input[type="button"] {
+  width: 40%;
+  height: 50px;
+  font-size: 1.75rem;
+}

@@ -22,6 +22,9 @@ from chess_controller import views as chess_views
 
 urlpatterns = [
     url(r'^chess/$', chess_views.comenzarJuego),
-    url(r'^chess/(?P<move>[0-9a-h]+)$', chess_views.movimiento),
+    url(r'^chess/(?P<move>[0-9a-h]+)/(?P<mode>[0-3]+)$',
+        chess_views.movimiento),
+    url(r'^chess/(?P<level>[0-3]+)$', chess_views.automatic_move),
     path('admin/', admin.site.urls),
+    path("", chess_views.index)
 ]

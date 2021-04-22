@@ -1,4 +1,6 @@
 import ChessBoard from './components/ChessBoard'
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
 
 import 'materialize-css/dist/css/materialize.min.css'
 import './styles/App.css'
@@ -6,16 +8,11 @@ import './styles/App.css'
 function App() {
 	
 	return (
-		<div className="container">
-
-			<div className="row">	
-				<div className="col s12" id="app">
+	
+		<Router>
+			<Route path="/" exact component={ChessBoard}/>	
+		</Router>
 				
-					<ChessBoard />
-				
-				</div>	
-			</div>
-		</div>
 
 	);
 

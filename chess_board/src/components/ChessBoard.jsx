@@ -1,9 +1,23 @@
 import { Component } from "react"
 import Tile from "./Tile"
 import Chess from "./Chess"
+import Dificultad from "./Dificultad"
 import Conection from "../Conection"
 
 import './styles/ChessBoard.css'
+
+import pawnBlack from '../assets/images/chess-pawn-black.png'
+import pawnWhite from '../assets/images/chess-pawn-white.png'
+import rookBlack from '../assets/images/chess-rook-black.png' 
+import rookWhite from '../assets/images/chess-rook-white.png' 
+import knightBlack from '../assets/images/chess-knight-black.png'
+import knightWhite from '../assets/images/chess-knight-white.png'
+import bishopBlack from '../assets/images/chess-bishop-black.png'
+import bishopWhite from '../assets/images/chess-bishop-white.png'
+import kingBlack from '../assets/images/chess-king-black.png'
+import kingWhite from '../assets/images/chess-king-white.png'
+import queenBlack from '../assets/images/chess-queen-black.png'
+import queenWhite from '../assets/images/chess-queen-white.png'
 
 const conection = new Conection()
 
@@ -28,11 +42,6 @@ const conversion = {
     "8": 7,
 }
 
-// const TeamType = {
-//     BLACK: 'BLACK',
-//     WHITE: 'WHITE'
-// }
-
 const PieceType = {
     PAWN: 'PAWN',
     BISHOP: "BISHOP",
@@ -49,53 +58,54 @@ for(let p = 0; p < 2; p++){
     initialBoardState.push(
         // Torres
         {
-            image: `assets/images/chess-rook-${type}.png`,
+            //image: `${process.env.PUBLIC_URL}/assets/images/chess-rook-${type}.png`,
+            image: (type === "black")?rookBlack : rookWhite,
             x: 0,
             y,
             type: PieceType.ROOK,
         },
         {
-            image: `assets/images/chess-rook-${type}.png`,
+            image: (type === "black")?rookBlack : rookWhite,
             x: 7,
             y,
             type: PieceType.ROOK,
         },
         // Caballos
         {
-            image: `assets/images/chess-knight-${type}.png`,
+            image: (type === "black")? knightBlack : knightWhite,
             x: 1,
             y,
             type: PieceType.KNIGHT,
         },
         {
-            image: `assets/images/chess-knight-${type}.png`,
+            image: (type === "black")? knightBlack : knightWhite,
             x: 6,
             y,
             type: PieceType.KNIGHT,
         },
         // Alfiles
         {
-            image: `assets/images/chess-bishop-${type}.png`,
+            image: (type === "black")? bishopBlack : bishopWhite,
             x: 2,
             y,
             type: PieceType.BISHOP,
         },
         {
-            image: `assets/images/chess-bishop-${type}.png`,
+            image: (type === "black")? bishopBlack : bishopWhite,
             x: 5,
             y,
             type: PieceType.BISHOP,
         },
         //Reyes
         {
-            image: `assets/images/chess-king-${type}.png`,
+            image: (type === "black")? kingBlack : kingWhite,
             x: 4,
             y,
             type: PieceType.KING,
         },
         //Reinas
         {
-            image: `assets/images/chess-queen-${type}.png`,
+            image: (type === "black")? queenBlack : queenWhite,
             x: 3,
             y,
             type: PieceType.QUEEN,
@@ -104,13 +114,13 @@ for(let p = 0; p < 2; p++){
 }
 for(let i = 0; i < 8; i++){
     initialBoardState.push({
-        image: "assets/images/chess-pawn-black.png",
+        image: pawnBlack,
         x: i,
         y: 6,
         type: PieceType.PAWN,
     })
     initialBoardState.push({
-        image: "assets/images/chess-pawn-white.png",
+        image: pawnWhite,
         x: i,
         y: 1,
         type: PieceType.PAWN,
@@ -133,6 +143,9 @@ class ChessBoard extends Component{
         activePiece: null,
         to_x: -1,
         to_y: -1,
+        mode: 0,
+        pc: [0, 2],
+        gameState: 0, 
     }
     constructor(){
         super()
@@ -197,7 +210,11 @@ class ChessBoard extends Component{
             clientHeight: document.getElementById('chessboard').clientHeight,
         })
         conection.getStart().then((result) => {
-            console.log(result);
+            this.setState({
+                ...this.state,
+                gameState: result.status,
+            })
+            console.log(result, this.state);
         })
     }
 
@@ -256,6 +273,14 @@ class ChessBoard extends Component{
         }    
     }
 
+    sleep = (milliseconds) => {
+        const date = Date.now();
+        let currentDate = null;
+        do {
+          currentDate = Date.now();
+        } while (currentDate - date < milliseconds);
+    }
+
     dropPiece = (e) => {
         var x = -1, y = -1
         if(this.activePiece){
@@ -268,15 +293,9 @@ class ChessBoard extends Component{
             var to_Y = verticalAxis[y]
             var toSent = "" + from_X + "" + from_Y + "" + to_X + "" + to_Y
             console.log(toSent);
-            conection.movimiento(toSent).then((result) => {
+            conection.movimiento(toSent, this.state.mode).then((result) => {
                 console.log(result);
-                if(result.isValid){
-                    const PC_move_x = conversion[result.move[2]]
-                    const PC_move_y = conversion[result.move[3]] 
-                    
-                    var newPieces = []
-                   
-                   
+                if(result.isValid){                 
                     this.state.pieces.map((p) =>{
                         if(p.x === this.state.gridX && p.y === this.state.gridY){
                             
@@ -288,40 +307,11 @@ class ChessBoard extends Component{
                     this.ponerTablero()
                     this.forceUpdate()
 
-                    const sleep = (milliseconds) => {
-                        const date = Date.now();
-                        let currentDate = null;
-                        do {
-                          currentDate = Date.now();
-                        } while (currentDate - date < milliseconds);
-                    }
 
-                    sleep(1000)  
-                    this.state.pieces.map((p) =>{
-                        if(p.x === PC_move_x && p.y === PC_move_y){
-                            console.log("ADIOS");
-                            console.log(p);                           
-                        } else {
-                            console.log("HOLA"); 
-                            //console.log(p);
-                            newPieces.push(p)
-                        }
-                    })
-                    this.setState({
-                        ...this.state,
-                        pieces: newPieces,
-                    })
-                    this.ponerTablero()
-                    this.forceUpdate()
-                    this.state.pieces.map((p) => {
-                        if(p.x === conversion[result.move[0]] && p.y === conversion[result.move[1]]){
-                            p.x = PC_move_x
-                            p.y = PC_move_y
-                        }
-                        return p
-                    })
+                    this.sleep(1000)  
+                    this.movePieceAlone(result.move)
                     
-                    console.log(x, y);
+                    //console.log(x, y);
                 }else {
                     console.log("falso");
                     this.state.pieces.map((p) =>{
@@ -364,18 +354,125 @@ class ChessBoard extends Component{
         
         
     }
+
+    handleClickMode = (e) => {
+        //console.log(e.target.value);
+        const option = e.target.value
+        if(option !== "PC vs PC"){
+            if(option === "Fácil"){
+                this.setState({
+                    ...this.state,
+                    mode: 0,
+                })
+                //console.log("Fácil");
+            }
+            else if (option === "Medio"){
+                this.setState({
+                    ...this.state,
+                    mode: 1,
+                })
+                //console.log("Medio");
+            }
+            else{
+                this.setState({
+                    ...this.state,
+                    mode: 2,
+                })
+                //console.log("Difícil");
+            }
+        } else {
+            this.automatic_game();
+        }
+    }
+    cont_moves = 0
+    automatic_game = () => {
+        
+        if(this.state.gameState !== "gameOver"){
+            const level = this.cont_moves % 2
+            console.log(level);
+            console.log(this.state.pc[level]);
+            conection.automatic_move(this.state.pc[level]).then((result) => {
+                console.log(result);
+                this.setState({
+                    ...this.state,
+                    gameState: result.status,
+                })
+                this.movePieceAlone(result.move)
+                this.cont_moves++;
+            })
+            this.ponerTablero()
+            this.forceUpdate()
+            // this.sleep(1000)
+        } else {
+            this.finalizarJuego()
+        }
+    }
+
+    movePieceAlone = (move) => {
+        const PC_move_x = conversion[move[2]]
+        const PC_move_y = conversion[move[3]] 
+                    
+        var newPieces = []
+
+        this.state.pieces.map((p) =>{
+            if(p.x === PC_move_x && p.y === PC_move_y){
+                console.log("ADIOS");
+                console.log(p);                           
+            } else {
+                console.log("HOLA"); 
+                //console.log(p);
+                newPieces.push(p)
+            }
+        })
+        this.setState({
+            ...this.state,
+            pieces: newPieces,
+        })
+        this.ponerTablero()
+        this.forceUpdate()
+        this.state.pieces.map((p) => {
+            if(p.x === conversion[move[0]] && p.y === conversion[move[1]]){
+                p.x = PC_move_x
+                p.y = PC_move_y
+            }
+            return p
+        })
+        this.ponerTablero()
+        this.forceUpdate()
+    }
+
+    finalizarJuego = () => {
+        alert("Juego terminado, la página se recargará en 5 segundos")
+        this.sleep(5000)
+        this.location.reload()
+    }
  
     render(){
         
         return(
 
-            <div 
-                id="chessboard"
-                onMouseMove={e => this.movePiece(e)} 
-                onMouseDown={ e => this.grabPiece(e) }
-                onMouseUp={e => this.dropPiece(e)}
-            >
-                <Chess board={this.board} />
+            <div className="row">	
+				<div className="col s8" id="app">
+                    
+                    <div 
+                        id="chessboard"
+                        onMouseMove={e => this.movePiece(e)} 
+                        onMouseDown={ e => this.grabPiece(e) }
+                        onMouseUp={e => this.dropPiece(e)}
+                    >
+                        <Chess board={this.board} />
+                    </div>
+
+                </div>
+
+                <div className="col s4" id="dificultad">
+
+                    <Dificultad
+                        mode={this.state.mode} 
+                        onClick={this.handleClickMode}
+                    />
+
+                </div>
             </div>
 
         )

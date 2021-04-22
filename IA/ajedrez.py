@@ -9,6 +9,7 @@ class Juego(object):
 
     def __init__(self):
         self.tablero = chess.Board()
+        self.tablero.castling_rights = False
 
     """Funciones que aplican para todos los niveles"""
 
@@ -69,15 +70,31 @@ class Juego(object):
         except:
             return "Jugada inválida"
 
-    def seleccionaMovimiento(self, nivel):
-        if nivel == 0:
-            return self.mejorMovimiento0()
-        elif nivel == 1:
-            return self.mejorMovimiento1(3)
-        elif nivel == -1:
-            return self.darJugadaParam()
+    def seleccionaMovimiento(self, juego, nivel):
+        if not juego.tablero.is_game_over():
+            if nivel == 0:
+                return {
+                    "GameOver": False,
+                    "move": self.mejorMovimiento0()
+                }
+            elif nivel == 1:
+                return {
+                    "GameOver": False,
+                    "move": self.mejorMovimiento1(3)
+                }
+                # return self.mejorMovimiento1(3)
+            # elif nivel == -1:
+            #     return self.darJugadaParam()
+            else:
+                return {
+                    "GameOver": False,
+                    "move": self.mejorMovimiento2(3)
+                }
+                # return self.mejorMovimiento2(3)
         else:
-            return self.mejorMovimiento2(3)
+            return {
+                "GameOver": True,
+            }
 
     """Funciones que aplican para el nivel 0"""
 
