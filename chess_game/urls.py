@@ -26,5 +26,5 @@ urlpatterns = [
         chess_views.movimiento),
     url(r'^chess/(?P<level>[0-3]+)$', chess_views.automatic_move),
     path('admin/', admin.site.urls),
-    path("/", chess_views.index)
+    path("", chess_views.index)
 ]
