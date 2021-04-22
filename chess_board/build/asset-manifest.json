@@ -1,0 +1,37 @@
+{
+  "files": {
+    "main.css": "/static/css/main.05725c2e.chunk.css",
+    "main.js": "/static/js/main.c317e1e1.chunk.js",
+    "main.js.map": "/static/js/main.c317e1e1.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.3791f113.js",
+    "runtime-main.js.map": "/static/js/runtime-main.3791f113.js.map",
+    "static/css/2.0f7ccd32.chunk.css": "/static/css/2.0f7ccd32.chunk.css",
+    "static/js/2.11774f24.chunk.js": "/static/js/2.11774f24.chunk.js",
+    "static/js/2.11774f24.chunk.js.map": "/static/js/2.11774f24.chunk.js.map",
+    "static/js/3.f14c51ce.chunk.js": "/static/js/3.f14c51ce.chunk.js",
+    "static/js/3.f14c51ce.chunk.js.map": "/static/js/3.f14c51ce.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.0f7ccd32.chunk.css.map": "/static/css/2.0f7ccd32.chunk.css.map",
+    "static/css/main.05725c2e.chunk.css.map": "/static/css/main.05725c2e.chunk.css.map",
+    "static/js/2.11774f24.chunk.js.LICENSE.txt": "/static/js/2.11774f24.chunk.js.LICENSE.txt",
+    "static/media/chess-bishop-black.5940250f.png": "/static/media/chess-bishop-black.5940250f.png",
+    "static/media/chess-bishop-white.311e0daa.png": "/static/media/chess-bishop-white.311e0daa.png",
+    "static/media/chess-king-black.d2a1a7e6.png": "/static/media/chess-king-black.d2a1a7e6.png",
+    "static/media/chess-king-white.bcf06732.png": "/static/media/chess-king-white.bcf06732.png",
+    "static/media/chess-knight-black.f3906ab1.png": "/static/media/chess-knight-black.f3906ab1.png",
+    "static/media/chess-knight-white.e0fa4264.png": "/static/media/chess-knight-white.e0fa4264.png",
+    "static/media/chess-pawn-black.a90021bc.png": "/static/media/chess-pawn-black.a90021bc.png",
+    "static/media/chess-pawn-white.ebae9f48.png": "/static/media/chess-pawn-white.ebae9f48.png",
+    "static/media/chess-queen-black.0af97291.png": "/static/media/chess-queen-black.0af97291.png",
+    "static/media/chess-queen-white.25cde828.png": "/static/media/chess-queen-white.25cde828.png",
+    "static/media/chess-rook-black.d6fa7518.png": "/static/media/chess-rook-black.d6fa7518.png",
+    "static/media/chess-rook-white.58159299.png": "/static/media/chess-rook-white.58159299.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.3791f113.js",
+    "static/css/2.0f7ccd32.chunk.css",
+    "static/js/2.11774f24.chunk.js",
+    "static/css/main.05725c2e.chunk.css",
+    "static/js/main.c317e1e1.chunk.js"
+  ]
+}
