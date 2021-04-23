@@ -1,4 +1,4 @@
-from IA import heuristicas as h
+import heuristicas as h
 import chess
 import chess.polyglot
 import random
@@ -9,7 +9,7 @@ class Juego(object):
 
     def __init__(self):
         self.tablero = chess.Board()
-        self.tablero.castling_rights=False
+        #self.tablero.castling_rights=False
 
 
     """Funciones que aplican para todos los niveles"""
@@ -46,19 +46,18 @@ class Juego(object):
         fila += "\n"
         return fila
 
-    def darJugada(self, ins):
-        # while True:
-        #ins = input("Da la movida que quieras hacer con el formato a1a2\n")
-        try:
-            movida = chess.Move(chess.parse_square(
-                ins[0:2]), chess.parse_square(ins[2:4]))
-            if movida in self.tablero.legal_moves:
-                return movida
-            else:
-                raise Exception
-        except:
-            #print("Jugada inválida")
-            return "Jugada invalida"
+    def darJugada(self):
+        while True:
+            ins = input("Da la movida que quieras hacer con el formato a1a2\n")
+            try:
+                movida = chess.Move(chess.parse_square(ins[0:2]),chess.parse_square(ins[2:4]))
+                if movida in self.tablero.legal_moves:
+                    return movida
+                else: 
+                    print("Esto no jalo")
+                    raise Exception
+            except:
+                print("Jugada inválida")
 
     def darJugadaParam(self, move):
         try:
@@ -71,31 +70,15 @@ class Juego(object):
         except:
             return "Jugada inválida"
 
-    def seleccionaMovimiento(self, juego, nivel):
-        if not juego.tablero.is_game_over():
-            if nivel == 0:
-                return {
-                    "GameOver": False,
-                    "move": self.mejorMovimiento0()
-                }
-            elif nivel == 1:
-                return {
-                    "GameOver": False,
-                    "move": self.mejorMovimiento1(3)
-                }
-                # return self.mejorMovimiento1(3)
-            # elif nivel == -1:
-            #     return self.darJugadaParam()
-            else:
-                return {
-                    "GameOver": False,
-                    "move": self.mejorMovimiento2(3)
-                }
-                # return self.mejorMovimiento2(3)
+    def seleccionaMovimiento(self, nivel):
+        if nivel == 0:
+            return self.mejorMovimiento0()
+        elif nivel == 1:
+            return self.mejorMovimiento1(3)
+        elif nivel == -1:
+            return self.darJugada()
         else:
-            return {
-                "GameOver": True,
-            }
+            return self.mejorMovimiento2(3)
 
     def obtenPiezas(self):
         piezas = dict()
@@ -240,14 +223,12 @@ class Juego(object):
             return -valorEval
         
     def calculaFase(self, numPiezas):
-        
         fasePeon = 0
         faseCaballo = 1
         faseAlfil = 1
         faseTorre = 2
         faseReina = 4
-        faseTotal = fasePeon*16 + faseCaballo*4 
-        + faseAlfil*4 + faseTorre*4 + faseReina*2
+        faseTotal = fasePeon*16 + faseCaballo*4 + faseAlfil*4 + faseTorre*4 + faseReina*2
         fase = faseTotal
 
         fase -= numPiezas["peonB"] * fasePeon
@@ -321,38 +302,38 @@ class Juego(object):
     """Ejecución del programa"""
 
     def jugar(self,nivelCompu, nivelHumano, jugadorHumano):
-        #self.imprimetablero()
+        self.imprimetablero()
         while not self.tablero.is_game_over():
             if self.tablero.turn == jugadorHumano:  # Blancas
                 movida = self.seleccionaMovimiento(nivelHumano)
             else:  # Negras
                 movida = self.seleccionaMovimiento(nivelCompu)
+            time.sleep(1.5)
             self.tablero.push(movida)
             self.imprimetablero()
-        # imprimetablero()
         return self.tablero.result()
 
 
-# if __name__ == "__main__":
-#     empates = 0  # 1/2-1/2
-#     blancas = 0  # 1-0
-#     negras = 0  # 0-1
-#     inicio = time.time()
-#     nivelCompu = 2
-#     nivelHumano = 0
-#     jugadorHumano = True  # True si juega como las blancas, False si juega como las negras
-#     for i in range(1):
-#         ai = Juego()
-#         #ai.tablero = chess.Board()
-#         resultado = ai.jugar(nivelCompu, nivelHumano, True)
-#         print("Juego:", i+1)
-#         if resultado == "0-1":
-#             negras += 1
-#         elif resultado == "1-0":
-#             blancas += 1
-#         else:
-#             empates += 1
-#     print("--- %s segundos ---" % (time.time() - inicio))
-#     print("Las blancas ganaron:", blancas)
-#     print("Las negras ganaron:", negras)
-#     print("Empates", empates)
+if __name__ == "__main__":
+    empates = 0  # 1/2-1/2
+    blancas = 0  # 1-0
+    negras = 0  # 0-1
+    inicio = time.time()
+    nivelCompu = 0
+    nivelHumano = 0
+    jugadorHumano = True  # True si juega como las blancas, False si juega como las negras
+    for i in range(1):
+        ai = Juego()
+        #ai.tablero = chess.Board()
+        resultado = ai.jugar(nivelCompu, nivelHumano, True)
+        print("Juego:", i+1)
+        if resultado == "0-1":
+            negras += 1
+        elif resultado == "1-0":
+            blancas += 1
+        else:
+            empates += 1
+    print("--- %s segundos ---" % (time.time() - inicio))
+    print("Las blancas ganaron:", blancas)
+    print("Las negras ganaron:", negras)
+    print("Empates", empates)
