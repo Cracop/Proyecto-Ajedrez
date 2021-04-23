@@ -320,7 +320,7 @@ if __name__ == "__main__":
     negras = 0  # 0-1
     inicio = time.time()
     nivelCompu = 0
-    nivelHumano = 0
+    nivelHumano = -1
     jugadorHumano = True  # True si juega como las blancas, False si juega como las negras
     for i in range(1):
         ai = Juego()
