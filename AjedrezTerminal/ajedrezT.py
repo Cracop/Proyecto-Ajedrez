@@ -186,12 +186,12 @@ class Juego(object):
         + 477 * (numPiezas["torreB"] - numPiezas["torreN"]) 
         + 1025 * (numPiezas["reinaB"] - numPiezas["reinaN"]) 
 
-        peonPos = sum([h.mg_pawn_table[chess.square_mirror(i)] for i in self.tablero.pieces(chess.PAWN, chess.WHITE)]) + sum([-h.mg_pawn_table[i] for i in self.tablero.pieces(chess.PAWN, chess.BLACK)])
-        caballoPos = sum([h.mg_knight_table[chess.square_mirror(i)] for i in self.tablero.pieces(chess.KNIGHT, chess.WHITE)]) + sum([-h.mg_knight_table[i] for i in self.tablero.pieces(chess.KNIGHT, chess.BLACK)])
-        alfilPos = sum([h.mg_bishop_table[chess.square_mirror(i)] for i in self.tablero.pieces(chess.BISHOP, chess.WHITE)]) + sum([-h.mg_bishop_table[i] for i in self.tablero.pieces(chess.BISHOP, chess.BLACK)])
-        torrePos = sum([h.mg_rook_table[chess.square_mirror(i)] for i in self.tablero.pieces(chess.ROOK, chess.WHITE)]) + sum([-h.mg_rook_table[i] for i in self.tablero.pieces(chess.ROOK, chess.BLACK)])
-        reinaPos = sum([h.mg_queen_table[chess.square_mirror(i)] for i in self.tablero.pieces(chess.QUEEN, chess.WHITE)]) + sum([-h.mg_queen_table[i] for i in self.tablero.pieces(chess.QUEEN, chess.BLACK)])
-        reyPos = sum([h.mg_king_table[chess.square_mirror(i)] for i in self.tablero.pieces(chess.KING, chess.WHITE)]) + sum([-h.mg_king_table[i] for i in self.tablero.pieces(chess.KING, chess.BLACK)])
+        peonPos = sum([h.mg_pawn_table[i] for i in self.tablero.pieces(chess.PAWN, chess.WHITE)]) + sum([-h.mg_pawn_table[chess.square_mirror(i)] for i in self.tablero.pieces(chess.PAWN, chess.BLACK)])
+        caballoPos = sum([h.mg_knight_table[i] for i in self.tablero.pieces(chess.KNIGHT, chess.WHITE)]) + sum([-h.mg_knight_table[chess.square_mirror(i)] for i in self.tablero.pieces(chess.KNIGHT, chess.BLACK)])
+        alfilPos = sum([h.mg_bishop_table[i] for i in self.tablero.pieces(chess.BISHOP, chess.WHITE)]) + sum([-h.mg_bishop_table[chess.square_mirror(i)] for i in self.tablero.pieces(chess.BISHOP, chess.BLACK)])
+        torrePos = sum([h.mg_rook_table[i] for i in self.tablero.pieces(chess.ROOK, chess.WHITE)]) + sum([-h.mg_rook_table[chess.square_mirror(i)] for i in self.tablero.pieces(chess.ROOK, chess.BLACK)])
+        reinaPos = sum([h.mg_queen_table[i] for i in self.tablero.pieces(chess.QUEEN, chess.WHITE)]) + sum([-h.mg_queen_table[chess.square_mirror(i)] for i in self.tablero.pieces(chess.QUEEN, chess.BLACK)])
+        reyPos = sum([h.mg_king_table[i] for i in self.tablero.pieces(chess.KING, chess.WHITE)]) + sum([-h.mg_king_table[chess.square_mirror(i)] for i in self.tablero.pieces(chess.KING, chess.BLACK)])
 
         valorEval = valorMaterial + peonPos + caballoPos + alfilPos + torrePos + reinaPos + reyPos
         #Esto lo hago porque lo bueno para mí es malo para mi oponente
@@ -208,12 +208,12 @@ class Juego(object):
         + 512 * (numPiezas["torreB"] - numPiezas["torreN"]) 
         + 936 * (numPiezas["reinaB"] - numPiezas["reinaN"]) 
         
-        peonPos = sum([h.eg_pawn_table[chess.square_mirror(i)] for i in self.tablero.pieces(chess.PAWN, chess.WHITE)]) + sum([-h.eg_pawn_table[i] for i in self.tablero.pieces(chess.PAWN, chess.BLACK)])
-        caballoPos = sum([h.eg_knight_table[chess.square_mirror(i)] for i in self.tablero.pieces(chess.KNIGHT, chess.WHITE)]) + sum([-h.eg_knight_table[i] for i in self.tablero.pieces(chess.KNIGHT, chess.BLACK)])
-        alfilPos = sum([h.eg_bishop_table[chess.square_mirror(i)] for i in self.tablero.pieces(chess.BISHOP, chess.WHITE)]) + sum([-h.eg_bishop_table[i] for i in self.tablero.pieces(chess.BISHOP, chess.BLACK)])
-        torrePos = sum([h.eg_rook_table[chess.square_mirror(i)] for i in self.tablero.pieces(chess.ROOK, chess.WHITE)]) + sum([-h.eg_rook_table[i] for i in self.tablero.pieces(chess.ROOK, chess.BLACK)])
-        reinaPos = sum([h.eg_queen_table[chess.square_mirror(i)] for i in self.tablero.pieces(chess.QUEEN, chess.WHITE)]) + sum([-h.eg_queen_table[i] for i in self.tablero.pieces(chess.QUEEN, chess.BLACK)])
-        reyPos = sum([h.eg_king_table[chess.square_mirror(i)] for i in self.tablero.pieces(chess.KING, chess.WHITE)]) + sum([-h.eg_king_table[i] for i in self.tablero.pieces(chess.KING, chess.BLACK)])
+        peonPos = sum([h.eg_pawn_table[i] for i in self.tablero.pieces(chess.PAWN, chess.WHITE)]) + sum([-h.eg_pawn_table[chess.square_mirror(i)] for i in self.tablero.pieces(chess.PAWN, chess.BLACK)])
+        caballoPos = sum([h.eg_knight_table[i] for i in self.tablero.pieces(chess.KNIGHT, chess.WHITE)]) + sum([-h.eg_knight_table[chess.square_mirror(i)] for i in self.tablero.pieces(chess.KNIGHT, chess.BLACK)])
+        alfilPos = sum([h.eg_bishop_table[i] for i in self.tablero.pieces(chess.BISHOP, chess.WHITE)]) + sum([-h.eg_bishop_table[chess.square_mirror(i)] for i in self.tablero.pieces(chess.BISHOP, chess.BLACK)])
+        torrePos = sum([h.eg_rook_table[i] for i in self.tablero.pieces(chess.ROOK, chess.WHITE)]) + sum([-h.eg_rook_table[chess.square_mirror(i)] for i in self.tablero.pieces(chess.ROOK, chess.BLACK)])
+        reinaPos = sum([h.eg_queen_table[i] for i in self.tablero.pieces(chess.QUEEN, chess.WHITE)]) + sum([-h.eg_queen_table[chess.square_mirror(i)] for i in self.tablero.pieces(chess.QUEEN, chess.BLACK)])
+        reyPos = sum([h.eg_king_table[i] for i in self.tablero.pieces(chess.KING, chess.WHITE)]) + sum([-h.eg_king_table[chess.square_mirror(i)] for i in self.tablero.pieces(chess.KING, chess.BLACK)])
 
         valorEval = valorMaterial + peonPos + caballoPos + alfilPos + torrePos + reinaPos + reyPos
         #Esto lo hago porque lo bueno para mí es malo para mi oponente
@@ -297,8 +297,7 @@ class Juego(object):
                     mejorMovimiento = movimiento
                 alfa = max(valorEval, alfa)
                 self.tablero.pop()
-                
-        return mejorMovimiento
+            return mejorMovimiento
     """Ejecución del programa"""
 
     def jugar(self,nivelCompu, nivelHumano, jugadorHumano):
@@ -306,11 +305,14 @@ class Juego(object):
         while not self.tablero.is_game_over():
             if self.tablero.turn == jugadorHumano:  # Blancas
                 movida = self.seleccionaMovimiento(nivelHumano)
+                jugada = "Blancas movieron " + str(movida)
             else:  # Negras
                 movida = self.seleccionaMovimiento(nivelCompu)
-            time.sleep(1.5)
+                jugada = "Negras movieron " + str(movida)
+                #time.sleep(1.5)
             self.tablero.push(movida)
             self.imprimetablero()
+            print(jugada)
         return self.tablero.result()
 
 
@@ -319,7 +321,7 @@ if __name__ == "__main__":
     blancas = 0  # 1-0
     negras = 0  # 0-1
     inicio = time.time()
-    nivelCompu = 0
+    nivelCompu = 1
     nivelHumano = -1
     jugadorHumano = True  # True si juega como las blancas, False si juega como las negras
     for i in range(1):

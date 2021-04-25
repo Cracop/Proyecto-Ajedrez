@@ -1,0 +1,21 @@
+Existen dos formas de correr este proyecto, una versión en terminal y una versión con interfaz gráfica.
+No importa la versión, en ambos caso se tiene que usar el siguiente comando:
+
+    pip install chess
+
+===Para correr la version en terminal:
+Solo se tiene que correr el archivo llamado "ajedrezT.py" que está en la carpeta de AjedrezTerminal. Por defecto se juega contra el nivel 1.
+
+
+===Para correr la versión gráfica:
+Se tienen que correr los siguientes comandos en la terminal
+    pip install django
+    pip install djangorestframework
+    pip django-cors-headers
+
+y luego se tiene que correr el siguiente comando:
+    python manage.py runserver
+
+Eso nos dará una dirección como: http://127.0.0.1:8000/
+Para poder correrlo en algún navegador solo necesitamos escribir localhost con los últimos 4 dígitos de la dirección
+En este caso: localhost:8000
